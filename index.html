@@ -205,6 +205,7 @@
 .reels-lg .rtile-title{font-size:12px}
 .reels-lg .rtile-views{font-size:11px}
   .detail-bio{font-size:13.5px;color:var(--ink);white-space:pre-line;background:var(--panel,#f4f7fb);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:0 0 12px;line-height:1.5}
+  .detail-bio .k{font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;display:block;margin-bottom:2px;color:var(--muted)}
   .avatar-lg{width:64px;height:64px;font-size:22px}
   .detail-head{display:flex;gap:14px;align-items:center;margin-bottom:12px}
   .detail-head h3{margin-bottom:2px}
@@ -343,6 +344,9 @@
   .ccard .cstats{display:flex;gap:14px;font-size:13.5px;color:var(--muted);flex-wrap:wrap}
   .ccard .cstats b{color:var(--ink);font-family:"Sora",sans-serif}
   .ccard .cact{display:flex;gap:7px;flex-wrap:wrap;margin-top:auto}
+  .ccard .cbio{font-size:13px;line-height:1.45;color:var(--ink)}
+  .ccard .cbio .cbio-k{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;display:block;color:var(--muted);margin-bottom:1px}
+  .ccard .cbio .cbio-t{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;white-space:pre-line}
   /* list table */
   .lt-wrap{border:1px solid var(--line);border-radius:12px;overflow:hidden}
   table.list-table{width:100%;border-collapse:collapse;font-size:14px}
@@ -1643,6 +1647,7 @@ function cardHTML(c, idx){
     '<span class="rmeta"><span class="badge b-platform">'+esc(c.platform)+'</span>'+(c.niche?'<span class="badge b-niche">'+esc(c.niche)+'</span>':'')+'<span class="badge '+sm.cls+'">'+sm.label+'</span>'+tagBadges(c)+screenBadge(c)+'</span>'+
     '<div class="cstats"><span>Followers <b>'+fmtNum(c.followers)+'</b></span><span>ER <b>'+erTxt+'</b></span><span>Views <b>'+fmtNum(c.views)+'</b></span></div>'+
     '<div class="cstats"><span>'+(c.location?esc(c.location):"Location not recorded")+'</span></div>'+
+    (c.bio? '<div class="cbio"><span class="cbio-k">Bio</span><span class="cbio-t">'+esc(c.bio)+'</span></div>' : '')+
     verifyNoteHTML(c)+
     reelsHTML(c)+
     '<div class="cstats"><span>Mail <b>'+(c.email? esc(c.email) : '—')+'</b></span></div>'+
@@ -1813,7 +1818,7 @@ function openDetail(c){
   if(c.status==="verified_fail" && c.fail_reason) h += '<div class="detail-fail"><span class="k">Fail reason</span>'+esc(c.fail_reason)+'</div>';
   if(c.muslim_evidence) h += '<div class="detail-ev"><span class="k">Evidence</span>'+esc(c.muslim_evidence)+'</div>';
   if(flags.length) h += '<div class="flags-row" style="margin:0 0 12px">'+flags.map(function(f){ return '<span class="badge '+f.cls+'">'+esc(f.t)+'</span>'; }).join("")+'</div>';
-  if(c.bio) h += '<p class="detail-bio">'+esc(c.bio)+'</p>';
+  if(c.bio) h += '<div class="detail-bio"><span class="k">Bio</span>'+esc(c.bio)+'</div>';
   var rh = reelsHTML(c, true);
   if(rh) h += rh + '<div style="height:12px"></div>';
   var likesVal=numVal(c.likes);
