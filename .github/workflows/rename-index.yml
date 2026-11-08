@@ -15,6 +15,6 @@ jobs:
         run: |
           git config user.name "jawadr-ehman"
           git config user.email "jawadr-ehman@users.noreply.github.com"
-          git mv jr-space.html index.html
+          git mv -f jr-space.html index.html
           git commit -m "Update JR Space: bug fixes (Likes filter, ER sort, search, Categories)"
           git push
