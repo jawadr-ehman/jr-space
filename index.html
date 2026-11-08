@@ -172,14 +172,14 @@
   .chip{border:1px solid var(--line);background:var(--chip);color:var(--ink);border-radius:999px;padding:5px 12px;font-size:13px;font-weight:600}
   .chip:hover{border-color:var(--accent)}
   .chip.active{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-  .thead{display:grid;grid-template-columns:minmax(0,1fr) 108px 84px 92px 196px;gap:10px;align-items:center;padding:4px 14px 9px}
+  .thead{display:grid;grid-template-columns:minmax(0,1fr) 108px 124px 92px 104px 80px 156px;gap:10px;align-items:center;padding:4px 14px 9px}
   .thead .th{font-size:13px;font-weight:700;color:var(--muted)}
   .thead .th.num{text-align:right}
   .sortbtn{border:0;background:transparent;font-size:13px;font-weight:700;color:var(--ink);padding:2px 0}
   .sortbtn:hover{color:var(--accent-dark)}
   .sortbtn .arr{color:var(--accent);font-size:11px}
   .rows{display:flex;flex-direction:column;gap:9px}
-  .trow{display:grid;grid-template-columns:minmax(0,1fr) 108px 84px 92px 196px;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px 14px}
+  .trow{display:grid;grid-template-columns:minmax(0,1fr) 108px 124px 92px 104px 80px 156px;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px 14px}
   .trow:hover{border-color:#c3d2e6}
   .rcell{display:flex;gap:11px;align-items:center;min-width:0}
   .avatar{width:44px;height:44px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-family:"Sora",sans-serif;font-weight:800;font-size:15px;color:#fff;position:relative;overflow:hidden}
@@ -221,6 +221,13 @@
   .rfol{font-family:"Sora",sans-serif;font-weight:800;font-size:15.5px;text-align:right}
   .rer{font-weight:700;font-size:14.5px;text-align:right}
   .rviews{font-weight:700;font-size:14.5px;text-align:right}
+  .rlink{font-size:13px;font-weight:600;min-width:0}
+  .rlink a{color:var(--accent);text-decoration:none;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .rlink a:hover{text-decoration:underline}
+  .rmail{font-size:13px;font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .rc-line{display:none;font-size:12.5px;color:var(--muted);overflow-wrap:anywhere}
+  .rc-line b{color:var(--ink);font-weight:700}
+  .rc-line a{color:var(--accent);text-decoration:none;font-weight:600}
   .ract{display:flex;gap:7px;justify-content:flex-end;flex-wrap:wrap}
   .badge{font-size:11px;font-weight:700;border-radius:999px;padding:2px 8px;white-space:nowrap}
   .b-platform{background:var(--chip);color:var(--ink);border:1px solid var(--line)}
@@ -412,6 +419,11 @@
   }
 
   /* ===== Responsive ===== */
+  @media (max-width:1340px){
+    .thead,.trow{grid-template-columns:minmax(0,1fr) 92px 72px 80px 168px}
+    .rlink,.rmail,.th-link,.th-mail{display:none}
+    .rc-line{display:block;flex-basis:100%}
+  }
   @media (max-width:1080px){
     .dash{grid-template-columns:250px minmax(0,1fr)}
     .thead,.trow{grid-template-columns:minmax(0,1fr) 92px 72px 80px 168px}
@@ -435,7 +447,7 @@
     .rcell{grid-area:who}
     .rfol{grid-area:fol;font-size:14.5px}
     .rer{grid-area:er;font-size:13px;color:var(--muted)}
-    .rer:before{content:"ER ";font-weight:600}
+    .rer:before{content:"Engagement ";font-weight:600}
     .rviews{grid-area:views;font-size:13px;color:var(--muted)}
     .rviews:before{content:"Views ";font-weight:600}
     .ract{grid-area:act;justify-content:flex-start}
@@ -911,8 +923,10 @@
         </div>
         <div class="thead" aria-hidden="true">
           <div class="th" id="thCreator">Creator</div>
+          <div class="th th-link">Link</div>
+          <div class="th th-mail">Mail</div>
           <div class="th num"><button class="sortbtn" type="button" id="sortFolBtn">Followers <span class="arr" id="sortFolArr">▼</span></button></div>
-          <div class="th num"><button class="sortbtn" type="button" id="sortERBtn">ER% <span class="arr" id="sortERArr">↕</span></button></div>
+          <div class="th num"><button class="sortbtn" type="button" id="sortERBtn">Engagement % <span class="arr" id="sortERArr">↕</span></button></div>
           <div class="th num">Views</div>
           <div class="th"></div>
         </div>
@@ -1279,6 +1293,7 @@ function fmtNum(n){ if(!n) return "—"; if(n>=1000000) return (Math.round(n/100
 function fmtDate(d){ if(!d) return "Not checked"; var p=String(d).split("-"); var months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]; var mi=parseInt(p[1],10)-1; if(p.length<3 || isNaN(mi) || mi<0 || mi>11 || !p[2]) return String(d); return p[2].replace(/^0/,"")+" "+months[mi]+" "+p[0]; }
 function erValue(c){ if(!c.er) return null; var s=String(c.er); if(/hidden/i.test(s)) return null; if(/very high/i.test(s)) return 99; var m=s.match(/([\d.]+)\s*%?/); if(!m) return null; var v=parseFloat(m[1]); return isNaN(v)? null : v; }
 function erText(c){ return erValue(c)!==null ? esc(c.er) : "—"; }
+function linkLabel(c){ if(!c.link) return "—"; return String(c.link).replace(/^https?:\/\//,"").replace(/^www\./,"").replace(/\/+$/,""); }
 function erKind(c){ if(c.er && /hidden/i.test(c.er)) return "hidden"; var v=erValue(c); if(v===null) return "unknown"; return v>=3?"ge3":"lt3"; }
 function statusMeta(s){ if(s==="verified_pass") return {cls:"b-pass",label:"✓ Verified pass"}; if(s==="verified_fail") return {cls:"b-fail",label:"✕ Verified fail"}; if(s==="unverified") return {cls:"b-unv",label:"○ Unverified"}; return {cls:"b-pend",label:"◐ Pending check"}; }
 function isNotVerified(c){ return !!c && c.status!=="verified_pass" && c.status!=="verified_fail"; }
@@ -1630,7 +1645,8 @@ function cardHTML(c, idx){
     '<div class="cstats"><span>'+(c.location?esc(c.location):"Location not recorded")+'</span></div>'+
     verifyNoteHTML(c)+
     reelsHTML(c)+
-    (c.email?'<div class="cstats"><span>'+esc(c.email)+'</span></div>':'')+
+    '<div class="cstats"><span>Mail <b>'+(c.email? esc(c.email) : '—')+'</b></span></div>'+
+    '<div class="cstats"><span>Profile <b>'+(c.link? '<a href="'+esc(c.link)+'" target="_blank" rel="noopener">'+esc(linkLabel(c))+'</a>' : '—')+'</b></span></div>'+
     '<div class="cact"><button class="mini keep-btn'+(screeningDecision(c)==="keep"?' active':'')+'" type="button" data-keep="'+idx+'">'+(screeningDecision(c)==="keep"?'✓ Kept':'Keep')+'</button><button class="mini reject-btn'+(screeningDecision(c)==="reject"?' active':'')+'" type="button" data-reject="'+idx+'">'+(screeningDecision(c)==="reject"?'✕ Rejected':'Reject')+'</button><button class="mini save-btn'+(savedIn?' saved':'')+'" type="button" data-save="'+idx+'">'+(savedIn? '★ Saved ('+savedIn+')' : 'Save to list')+'</button><button class="mini view" type="button" data-detail="'+idx+'">View</button><button class="mini cmp-btn'+(isCompared(c)?' active':'')+'" type="button" data-compare="'+idx+'">'+(isCompared(c)?'✓ Comparing':'Compare')+'</button><button class="mini track-btn'+(isTracked(c)?' active':'')+'" type="button" data-track="'+idx+'">'+(isTracked(c)?'✓ Tracked':'Track')+'</button></div>'+
   '</div>';
 }
@@ -1689,7 +1705,9 @@ function rowHTML(c, idx){
     '<div class="rcell">'+avatarHTML(c)+''+
     '<span class="rwho"><span class="rname">'+esc(displayName(c))+(c.status==="verified_pass"?VBADGE:"")+'</span>'+
     '<a class="rhandle" href="'+esc(c.link)+'" target="_blank" rel="noopener">'+esc(c.handle)+'</a>'+
-    '<span class="rmeta"><span class="badge b-platform">'+esc(c.platform)+'</span>'+(c.niche?'<span class="badge b-niche">'+esc(c.niche)+'</span>':'')+'<span class="badge '+sm.cls+'">'+sm.label+'</span><span>'+(c.location?esc(c.location):"Location not recorded")+'</span>'+tagBadges(c)+screenBadge(c)+verifyNoteInline(c)+'</span></span></div>'+
+    '<span class="rmeta"><span class="badge b-platform">'+esc(c.platform)+'</span>'+(c.niche?'<span class="badge b-niche">'+esc(c.niche)+'</span>':'')+'<span class="badge '+sm.cls+'">'+sm.label+'</span><span>'+(c.location?esc(c.location):"Location not recorded")+'</span>'+tagBadges(c)+screenBadge(c)+verifyNoteInline(c)+'<span class="rc-line"><b>Link:</b> '+(c.link? '<a href="'+esc(c.link)+'" target="_blank" rel="noopener">'+esc(linkLabel(c))+'</a>' : '—')+'</span><span class="rc-line"><b>Mail:</b> '+(c.email? esc(c.email) : '—')+'</span></span></span></div>'+
+    '<div class="rlink">'+(c.link? '<a href="'+esc(c.link)+'" target="_blank" rel="noopener" title="'+esc(c.link)+'">'+esc(linkLabel(c))+'</a>' : '—')+'</div>'+
+    '<div class="rmail"'+(c.email? ' title="'+esc(c.email)+'"' : '')+'>'+(c.email? esc(c.email) : '—')+'</div>'+
     '<div class="rfol" title="'+(c.followers?fmtInt(c.followers):"0")+' followers">'+fmtNum(c.followers)+'</div>'+
     '<div class="rer">'+erTxt+'</div>'+
     '<div class="rviews" title="'+(c.views?fmtInt(c.views)+" average views":"Average views not recorded")+'">'+fmtNum(c.views)+'</div>'+
@@ -1800,17 +1818,19 @@ function openDetail(c){
   if(rh) h += rh + '<div style="height:12px"></div>';
   var likesVal=numVal(c.likes);
   h += '<dl class="kv">'+
+    row("Name", c.name)+
+    row("Username", c.handle)+
+    row("Profile link", c.link)+
+    row("Mail", c.email)+
+    row("Followers", c.followers? fmtInt(c.followers)+" ("+fmtNum(c.followers)+")" : "")+
+    row("Views (average)", c.views? fmtInt(c.views)+" ("+fmtNum(c.views)+")" : "")+
+    row("Engagement %", erValue(c)!==null? c.er : "")+
     row("Status", sm.label.replace("✓ ","").replace("✕ ","").replace("◐ ","").replace("○ ",""))+
-    row("Followers (exact)", (c.followers? c.followers.toLocaleString("en-GB") : "—")+" ("+fmtNum(c.followers)+" compact)")+
     row("City", c.location||"Not recorded")+
-    row("Engagement (ER)", c.er||"Not checked")+
-    row("Average views", c.views? fmtInt(c.views)+" ("+fmtNum(c.views)+" compact)" : "—")+
     row("Niche", c.niche)+
     row("Last post", c.last_post? fmtDate(c.last_post) : "Not checked")+
     row("Freshness", fl.txt)+
-    row("Email", c.email||"Not available")+
     row(c.status==="verified_fail"?"Fail reason":"Check note", c.fail_reason||"No flags")+
-    row("Profile link", c.link)+
     row("Following", "—")+
     row("Post count", "—")+
     row("Average likes", likesVal!==null? fmtInt(likesVal)+" ("+fmtNum(likesVal)+" compact)" : "—")+
