@@ -991,6 +991,7 @@
       </div>
       <p class="countline" id="campCountLine" style="margin:0 0 6px"></p>
       <div id="campRows"></div>
+      <div id="campDraftBox"></div>
       <div class="empty" id="campEmptyBox" hidden>
         <h3>No creators in this campaign yet</h3>
         <p>The attached list is empty. Add creators to the list in Discover, and they will appear here.</p>
@@ -1001,7 +1002,7 @@
   <section class="panel-wrap" id="savedView" hidden aria-label="Saved searches and history">
     <div class="panel-head">
       <h2>Saved Searches &amp; History</h2>
-      <p>Save any filter combination and re-run it later. Your search history is kept in this browser, with dates.</p>
+      <p>Save any filter combination and re-run it later. Your search history is kept in this browser for your account only, with dates — a different account signing in here sees only its own history.</p>
     </div>
     <div class="dash-cols">
       <div class="dash-col">
@@ -1255,25 +1256,29 @@ var smartChips=[];
 var smartSearched=false;
 var smartTags=[];
 function clearSmart(){ smartLoc=""; smartUK=false; smartMuslim=false; smartNoMusic=false; smartNoFlex=false; smartNoFight=false; smartMin=null; smartMax=null; smartERmin=null; smartChips=[]; smartSearched=false; smartTags=[]; var box=document.getElementById("nlParsed"); if(box) box.innerHTML=""; }
-/* Topic / #hashtag matching — a tag like #dailyroutine matches the topic
-   "daily routine" (spaces, underscores and dashes ignored) in a creator's
-   topics, bio or hashtags, and also matches the plain word in name or @handle. */
+/* Topic / #hashtag / keyword matching — ONE matcher for every search path
+   (AI search, Discover search, topic box, hashtag filter, category dropdown),
+   so the same term always returns the same creators everywhere. A tag like
+   #dailyroutine matches the topic "daily routine" (spaces, underscores and
+   dashes ignored). The fields tested are the same ones the keyword search
+   has always used: niche, bio, name, handle, hashtags, location, platform
+   and public email. */
 function normTopicText(s){ return String(s||"").toLowerCase().replace(/[\s_\-\/&]+/g,""); }
 function topicMatch(c, term){
   var raw=String(term||"").toLowerCase().replace(/^#+/,"").trim();
   if(!raw) return true;
   var tagStr=c.hashtags ? (Array.isArray(c.hashtags) ? c.hashtags.join(" ") : String(c.hashtags)) : "";
-  var topics=((c.niche||"")+" "+(c.bio||"")+" "+tagStr).toLowerCase();
-  if(topics.indexOf(raw)!==-1) return true;
+  var hay=((c.name||"")+" "+(c.handle||"")+" "+(c.location||"")+" "+(c.niche||"")+" "+(c.platform||"")+" "+(c.email||"")+" "+(c.bio||"")+" "+tagStr).toLowerCase();
+  if(hay.indexOf(raw)!==-1) return true;
   var nt=normTopicText(raw);
-  if(nt && normTopicText(topics).indexOf(nt)!==-1) return true;
-  var who=((c.name||"")+" "+(c.handle||"")).toLowerCase();
-  return who.indexOf(raw)!==-1;
+  if(nt && normTopicText(hay).indexOf(nt)!==-1) return true;
+  return false;
 }
 function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
 function fmtNum(n){ if(!n) return "—"; if(n>=1000000) return (Math.round(n/100000)/10).toString().replace(/\.0$/,"") + "M"; if(n>=1000) return (Math.round(n/100)/10).toString().replace(/\.0$/,"") + "K"; return String(n); }
 function fmtDate(d){ if(!d) return "Not checked"; var p=String(d).split("-"); var months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]; var mi=parseInt(p[1],10)-1; if(p.length<3 || isNaN(mi) || mi<0 || mi>11 || !p[2]) return String(d); return p[2].replace(/^0/,"")+" "+months[mi]+" "+p[0]; }
-function erValue(c){ if(!c.er) return null; if(/hidden/i.test(c.er)) return null; if(/very high/i.test(c.er)) return 99; var m=String(c.er).match(/([\d.]+)\s*%/); return m?parseFloat(m[1]):null; }
+function erValue(c){ if(!c.er) return null; var s=String(c.er); if(/hidden/i.test(s)) return null; if(/very high/i.test(s)) return 99; var m=s.match(/([\d.]+)\s*%?/); if(!m) return null; var v=parseFloat(m[1]); return isNaN(v)? null : v; }
+function erText(c){ return erValue(c)!==null ? esc(c.er) : "—"; }
 function erKind(c){ if(c.er && /hidden/i.test(c.er)) return "hidden"; var v=erValue(c); if(v===null) return "unknown"; return v>=3?"ge3":"lt3"; }
 function statusMeta(s){ if(s==="verified_pass") return {cls:"b-pass",label:"✓ Verified pass"}; if(s==="verified_fail") return {cls:"b-fail",label:"✕ Verified fail"}; if(s==="unverified") return {cls:"b-unv",label:"○ Unverified"}; return {cls:"b-pend",label:"◐ Pending check"}; }
 function isNotVerified(c){ return !!c && c.status!=="verified_pass" && c.status!=="verified_fail"; }
@@ -1298,33 +1303,55 @@ function contentLinks(c){ var h=String(c.handle||"").trim().replace(/^@/,""); if
   case "LinkedIn": var b=String(c.link||"").replace(/\/+$/,"")||("https://www.linkedin.com/in/"+h); return [{t:"Profile",u:b},{t:"Posts",u:b+"/recent-activity/all/"}];
   default: return c.link? [{t:"Open profile", u:c.link}] : [];
 } }
-function reelImgErr(img){ var fb=img.getAttribute("data-fb"); if(fb){ img.removeAttribute("data-fb"); img.src=fb; return; } avatarErr(img); }
+function reelImgErr(img){ img.remove(); }
 function reelsHTML(c, lg){
   var reels=(c.reels && c.reels.length)? c.reels.slice(0,4).filter(function(r){ return r && r.url; }) : [];
   if(reels.length){
     var label=(c.platform==="Instagram" || c.platform==="TikTok")? "Recent reels" : "Recent videos";
-    var u=avatarURL(c); var live=liveAvatarURL(c); var prof=u||live;
+    var usedThumbs={};
     var tiles=reels.map(function(r){
       var thumb=(r.thumb && /^https?:\/\//i.test(String(r.thumb)))? String(r.thumb) : "";
-      var img=thumb||prof;
+      /* A tile may only show its OWN thumbnail from the reel data. A reel
+         with no thumbnail of its own — or whose thumbnail another tile in
+         this strip already shows — gets the initials placeholder instead:
+         the profile photo or a neighbouring reel's image is never repeated
+         across tiles as if each tile were a different reel. */
+      if(thumb && usedThumbs[thumb]) thumb="";
+      if(thumb) usedThumbs[thumb]=1;
       var inner='<span class="rtile-ini" aria-hidden="true">'+esc(initials(c))+'</span>';
-      if(img){
-        var fb=(thumb && prof && thumb!==prof)? ' data-fb="'+esc(prof)+'"' : '';
-        var dl=(img===u && live && live!==u)? ' data-live="'+esc(live)+'"' : '';
-        inner+='<img class="rtile-img" src="'+esc(img)+'"'+fb+dl+' alt="" loading="lazy" referrerpolicy="no-referrer" onerror="reelImgErr(this)" />';
+      if(thumb){
+        inner+='<img class="rtile-img" src="'+esc(thumb)+'" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="reelImgErr(this)" />';
       }
       var views=r.views? fmtNum(r.views)+" views" : "";
       return '<a class="rtile" href="'+esc(r.url)+'" target="_blank" rel="noopener" title="'+esc(r.title||"")+'">'+inner+'<span class="rtile-shade"></span><span class="rtile-play">&#9654;</span><span class="rtile-meta"><span class="rtile-title">'+esc(r.title||"")+'</span>'+(views? '<span class="rtile-views">'+esc(views)+'</span>' : '')+'</span></a>';
     }).join("");
     return '<div class="reels-wrap'+(lg?" reels-lg":"")+'"><div class="reels-head">&#9654; '+label+'</div><div class="reels-strip">'+tiles+'</div></div>';
   }
-  var links=contentLinks(c); if(!links.length) return ""; var u2=avatarURL(c); var live2=liveAvatarURL(c); var src=u2||live2; var dl2=(u2 && live2 && live2!==u2)? ' data-live="'+esc(live2)+'"' : ''; var tiles2=links.map(function(L){ return '<a class="rtile" href="'+esc(L.u)+'" target="_blank" rel="noopener" title="'+esc(L.t)+" — opens on "+esc(c.platform)+'">'+(src? '<img class="rtile-img" src="'+esc(src)+'"'+dl2+' alt="" loading="lazy" referrerpolicy="no-referrer" onerror="avatarErr(this)" />' : '<span class="rtile-ini" aria-hidden="true">'+esc(initials(c))+'</span>')+'<span class="rtile-shade"></span><span class="rtile-play">&#9654;</span><span class="rtile-lbl">'+esc(L.t)+'</span></a>'; }).join(""); return '<div class="reels-wrap'+(lg?" reels-lg":"")+'"><div class="reels-head">&#9654; Watch on <b>'+esc(c.platform)+'</b> — opens the creator&rsquo;s own pages</div><div class="reels-strip">'+tiles2+'</div>'+(lg? '<div class="reels-note">These open the creator&rsquo;s own '+esc(c.platform)+' tabs, where their reels and posts play live.</div>' : '')+'</div>'; }
+  var links=contentLinks(c); if(!links.length) return ""; var tiles2=links.map(function(L){ return '<a class="rtile" href="'+esc(L.u)+'" target="_blank" rel="noopener" title="'+esc(L.t)+" — opens on "+esc(c.platform)+'">'+'<span class="rtile-ini" aria-hidden="true">'+esc(initials(c))+'</span>'+'<span class="rtile-shade"></span><span class="rtile-play">&#9654;</span><span class="rtile-lbl">'+esc(L.t)+'</span></a>'; }).join(""); return '<div class="reels-wrap'+(lg?" reels-lg":"")+'"><div class="reels-head">&#9654; Watch on <b>'+esc(c.platform)+'</b> — opens the creator&rsquo;s own pages</div><div class="reels-strip">'+tiles2+'</div>'+(lg? '<div class="reels-note">These open the creator&rsquo;s own '+esc(c.platform)+' tabs, where their reels and posts play live.</div>' : '')+'</div>'; }
 var VBADGE = '<svg class="vbadge" width="16" height="16" viewBox="0 0 24 24" role="img" aria-label="Verified pass"><circle cx="12" cy="12" r="10" fill="#1d9bf0"/><path d="M8.2 12.5l2.4 2.4 5-5.4" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
 
 /* ---------- Filter option fillers ---------- */
+/* A Categories option must be a real topic/niche value from the data — not a
+   follower count that landed in the niche field ("10.2k"), not a scraped
+   directory tail ("… F FeedSpot for Influencers +1") and not a verification
+   note ("PROSPECT, NOT verified: latest 2026-11-01; ER fail …"). Values that
+   fail these checks stay searchable through the topic box; they are only
+   kept out of the dropdown. Nothing is invented: every option shown is a
+   niche value real creators carry, and selecting it filters on that value. */
+function isCategoryName(n){
+  var s=String(n||"").trim();
+  if(s.length<2 || s.length>56) return false;
+  if(!/[A-Za-z]/.test(s)) return false;
+  if(/^\d/.test(s)) return false;
+  if(/[:;]/.test(s)) return false;
+  if(/\b(19|20)\d{2}\b/.test(s)) return false;
+  if(/prospect|not verified|feedspot|social cat|idcrawl|imginn|modash/i.test(s)) return false;
+  if(s.split(/\s+/).length>7) return false;
+  return true;
+}
 function fillNiches(){
-  var seen={}; CREATORS.forEach(function(c){ if(c.niche) seen[c.niche]=true; });
+  var seen={}; CREATORS.forEach(function(c){ if(c.niche && isCategoryName(c.niche)) seen[c.niche]=true; });
   var sel=document.getElementById("fNiche2"); if(!sel) return;
   var cur=sel.value;
   sel.innerHTML='<option value="">Any</option>';
@@ -1463,6 +1490,11 @@ function parseCount(v){
   return isNaN(n) ? null : Math.round(n*mult);
 }
 function parsePct(v){ v=String(v==null?"":v).trim().replace(/%/g,""); if(!v) return null; var n=parseFloat(v); return isNaN(n)? null : n; }
+/* Numeric value of a creator field (views, likes): accepts a real number,
+   a numeric string ("9400"), a comma-grouped string ("9,400") and a compact
+   formatted string ("9.4K", "1.2M") — the same parsing the filter boxes use.
+   Returns null when the creator has no usable value recorded. */
+function numVal(v){ if(v===null || v===undefined || v==="") return null; return parseCount(v); }
 function getFilters(){
   return {
     q: document.getElementById("q").value.trim().toLowerCase(),
@@ -1494,7 +1526,7 @@ function applyFilters(){
   var f=getFilters();
   var dbDate=new Date(String(CREATORS_DB.updated)+"T00:00:00");
   var out=CREATORS.filter(function(c){
-    if(f.q){ var hay=(c.name+" "+c.handle+" "+c.location+" "+c.niche+" "+c.platform+" "+(c.email||"")+" "+(c.bio||"")+" "+(c.hashtags ? (Array.isArray(c.hashtags) ? c.hashtags.join(" ") : String(c.hashtags)) : "")).toLowerCase(); if(hay.indexOf(f.q)===-1){ var qt=f.q.replace(/^#+/,"").trim(); if(!qt || !topicMatch(c, qt)) return false; } }
+    if(f.q && !topicMatch(c, f.q)) return false;
     if(f.platform && c.platform!==f.platform) return false;
     if(f.status && c.status!==f.status) return false;
     if(f.verifiedOnly && c.status!=="verified_pass") return false;
@@ -1520,14 +1552,14 @@ function applyFilters(){
     if(f.folFrom!==null && !(c.followers>=f.folFrom)) return false;
     if(f.folTo!==null && !(c.followers<=f.folTo)) return false;
     if(f.viewsFrom!==null || f.viewsTo!==null){
-      var vv=(c.views===null || c.views===undefined || c.views==="") ? null : Number(c.views);
-      if(vv===null || isNaN(vv)) return false;
+      var vv=numVal(c.views);
+      if(vv===null) return false;
       if(f.viewsFrom!==null && vv<f.viewsFrom) return false;
       if(f.viewsTo!==null && vv>f.viewsTo) return false;
     }
     if(f.likesFrom!==null || f.likesTo!==null){
-      var lk=(c.likes===null || c.likes===undefined || c.likes==="") ? null : Number(c.likes);
-      if(lk===null || isNaN(lk)) return false;
+      var lk=numVal(c.likes);
+      if(lk===null) return false;
       if(f.likesFrom!==null && lk<f.likesFrom) return false;
       if(f.likesTo!==null && lk>f.likesTo) return false;
     }
@@ -1563,6 +1595,18 @@ function applyFilters(){
   });
   return dedupeCreators(out);
 }
+/* "Filters are active" must reflect the actual filter state — never a
+   result-count comparison (de-duplication alone makes the counts differ). */
+function anyFiltersActive(){
+  var f=getFilters();
+  return !!(f.q || f.platform || f.status || f.niche || f.hash ||
+    f.erFrom!==null || f.erTo!==null || f.location || f.email || f.hideSaved ||
+    f.activeOnly || f.bio || f.tag || f.screen || f.lastPost || f.verifiedOnly ||
+    f.folFrom!==null || f.folTo!==null || f.viewsFrom!==null || f.viewsTo!==null ||
+    f.likesFrom!==null || f.likesTo!==null ||
+    smartTags.length || smartLoc || smartUK || smartMuslim || smartNoMusic ||
+    smartNoFlex || smartNoFight || smartMin!==null || smartMax!==null || smartERmin!==null);
+}
 
 /* ---------- Result rows ---------- */
 var currentList=[];
@@ -1575,7 +1619,7 @@ var pageSize=50;
 try{ pageSize = parseInt(localStorage.getItem("jrs_pagesize"),10) || 50; }catch(e){}
 function cardHTML(c, idx){
   var sm=statusMeta(c.status);
-  var erTxt = (c.er && /[\d.]+%/.test(c.er)) ? esc(c.er) : "—";
+  var erTxt = erText(c);
   var savedIn = listsContaining(c).length;
   return '<div class="ccard">'+
     '<div class="chead">'+avatarHTML(c)+''+
@@ -1628,7 +1672,7 @@ function render(resetLimit){
     else { document.getElementById("emptyTitle").textContent="No creator matched"; document.getElementById("emptyText").textContent="Try loosening the filters or changing your search term."; }
   }
   var thc=document.getElementById("thCreator"); if(thc) thc.textContent="Creator "+fmtInt(currentList.length);
-  var noteTxt = currentList.length===CREATORS.length ? "" : "Filters are active — use Clear filters to reset.";
+  var noteTxt = anyFiltersActive() ? "Filters are active — use Clear filters to reset." : "";
   if(!DATA_COMPLETE) noteTxt = (noteTxt ? noteTxt+" " : "") + "More creators are still loading — results update automatically.";
   document.getElementById("resultsNote").textContent = noteTxt;
   var sv=document.getElementById("fSort").value;
@@ -1639,7 +1683,7 @@ function render(resetLimit){
 
 function rowHTML(c, idx){
   var sm=statusMeta(c.status);
-  var erTxt = (c.er && /[\d.]+%/.test(c.er)) ? esc(c.er) : "—";
+  var erTxt = erText(c);
   var savedIn = listsContaining(c).length;
   return '<div class="trow">'+
     '<div class="rcell">'+avatarHTML(c)+''+
@@ -1754,6 +1798,7 @@ function openDetail(c){
   if(c.bio) h += '<p class="detail-bio">'+esc(c.bio)+'</p>';
   var rh = reelsHTML(c, true);
   if(rh) h += rh + '<div style="height:12px"></div>';
+  var likesVal=numVal(c.likes);
   h += '<dl class="kv">'+
     row("Status", sm.label.replace("✓ ","").replace("✕ ","").replace("◐ ","").replace("○ ",""))+
     row("Followers (exact)", (c.followers? c.followers.toLocaleString("en-GB") : "—")+" ("+fmtNum(c.followers)+" compact)")+
@@ -1768,7 +1813,7 @@ function openDetail(c){
     row("Profile link", c.link)+
     row("Following", "—")+
     row("Post count", "—")+
-    row("Average likes", "—")+
+    row("Average likes", likesVal!==null? fmtInt(likesVal)+" ("+fmtNum(likesVal)+" compact)" : "—")+
     row("Average comments", "—")+
     row("Posting frequency", "—")+
     row("Language", "—")+
@@ -2048,7 +2093,7 @@ function resetAll(keepChip){
   document.getElementById("fSort").value="followers-desc";
   setPlatform("");
   clearSmart();
-  if(!keepChip) setChip("all");
+  if(!keepChip) setChip("");
 }
 document.querySelectorAll("#quickChips .chip").forEach(function(ch){
   ch.addEventListener("click", function(){
@@ -2361,18 +2406,22 @@ var jrSession=null;
 var CAMP_STATUSES=["Not contacted","Contacted","Replied","Confirmed","Posted"];
 function lsGet(k){ try{ var v=localStorage.getItem(k); return v?JSON.parse(v):null; }catch(e){ return null; } }
 function lsSet(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+/* Search history is scoped to the signed-in account: each account's history
+   lives under its own storage key, so one account never sees another
+   account's searches in the same browser. */
+function historyStoreKey(){ return "jrs_history_v1::"+(jrSession||"guest"); }
 function loadAllStores(){
   statsSearches = lsGet("jrs_stats_v1") && typeof lsGet("jrs_stats_v1").searches==="number" ? lsGet("jrs_stats_v1").searches : 0;
-  searchHistory = lsGet("jrs_history_v1") || [];
+  jrUsers = lsGet("jrs_users_v1") || [];
+  jrSession = lsGet("jrs_session_v1");
+  searchHistory = lsGet(historyStoreKey()) || [];
   savedSearches = lsGet("jrs_saved_searches_v1") || [];
   recentSavedKeys = lsGet("jrs_recent_v1") || [];
   campaigns = lsGet("jrs_campaigns_v1") || [];
   var st = lsGet("jrs_settings_v1"); if(st) jrSettings = {platform:st.platform||"", country:st.country||"", folFrom:st.folFrom||"", folTo:st.folTo||""};
-  jrUsers = lsGet("jrs_users_v1") || [];
-  jrSession = lsGet("jrs_session_v1");
 }
 function saveStatsStore(){ lsSet("jrs_stats_v1", {searches:statsSearches}); }
-function saveHistoryStore(){ lsSet("jrs_history_v1", searchHistory); }
+function saveHistoryStore(){ lsSet(historyStoreKey(), searchHistory); }
 function saveSavedSearchesStore(){ lsSet("jrs_saved_searches_v1", savedSearches); }
 function saveRecentStore(){ lsSet("jrs_recent_v1", recentSavedKeys); }
 function saveCampaignsStore(){ lsSet("jrs_campaigns_v1", campaigns); }
@@ -2411,7 +2460,20 @@ function captureFilters(){
     viewsTo: document.getElementById("fViewsTo").value,
     likesFrom: document.getElementById("fLikesFrom").value,
     likesTo: document.getElementById("fLikesTo").value,
-    sort: document.getElementById("fSort").value
+    sort: document.getElementById("fSort").value,
+    /* Smart-search state lives outside the form fields (hashtags, follower
+       range, city, flags) — capture it too, or a "#fitness" AI search would
+       snapshot as "no filters" and re-run as an unfiltered search. */
+    tags: smartTags.slice(),
+    smartLoc: smartLoc,
+    smartUK: smartUK,
+    smartMin: smartMin,
+    smartMax: smartMax,
+    smartERmin: smartERmin,
+    smartMuslim: smartMuslim,
+    smartNoMusic: smartNoMusic,
+    smartNoFlex: smartNoFlex,
+    smartNoFight: smartNoFight
   };
 }
 function filterSummary(snap){
@@ -2422,9 +2484,18 @@ function filterSummary(snap){
   if(snap.niche) parts.push("Topic: "+snap.niche);
   else if(snap.niche2) parts.push("Category: "+snap.niche2);
   if(snap.hash) parts.push("Hashtag: "+snap.hash);
+  if(snap.tags && snap.tags.length) parts.push(snap.tags.map(function(t){ return "#"+t; }).join(" "));
+  if(snap.smartUK) parts.push("Location: UK");
+  else if(snap.smartLoc) parts.push("Location: "+snap.smartLoc);
+  if(snap.smartERmin) parts.push("ER "+snap.smartERmin+"%+");
+  if(snap.smartMuslim) parts.push("Muslim evidence");
+  if(snap.smartNoMusic) parts.push("No music");
+  if(snap.smartNoFlex) parts.push("No flexing");
+  if(snap.smartNoFight) parts.push("No fighters");
   if(snap.location) parts.push(snap.location);
   if(snap.status) parts.push("Status: "+snap.status);
-  if(snap.folFrom || snap.folTo) parts.push("Followers "+(snap.folFrom||"0")+" – "+(snap.folTo||"any"));
+  if((snap.folFrom || snap.folTo) && snap.smartMin==null && snap.smartMax==null) parts.push("Followers "+(snap.folFrom||"0")+" – "+(snap.folTo||"any"));
+  if(snap.smartMin!=null || snap.smartMax!=null) parts.push("Followers "+(snap.smartMin||"0")+" – "+(snap.smartMax||"any"));
   if(snap.viewsFrom || snap.viewsTo) parts.push("Views "+(snap.viewsFrom||"0")+" – "+(snap.viewsTo||"any"));
   if(snap.likesFrom || snap.likesTo) parts.push("Likes "+(snap.likesFrom||"0")+" – "+(snap.likesTo||"any"));
   if(snap.erFrom || snap.erTo) parts.push("ER "+(snap.erFrom||"0")+"% – "+(snap.erTo||"any"));
@@ -2468,8 +2539,22 @@ function applySnapshot(snap){
   document.getElementById("fLikesFrom").value=snap.likesFrom||"";
   document.getElementById("fLikesTo").value=snap.likesTo||"";
   document.getElementById("fSort").value=snap.sort||"followers-desc";
+  /* Restore the smart-search state captured with the snapshot (resetAll
+     above already cleared it), so re-running a history entry or a saved
+     search applies the same filters it records — hashtags included. */
+  if(snap.tags && snap.tags.length){ snap.tags.forEach(function(t){ if(smartTags.indexOf(t)===-1){ smartTags.push(t); smartChips.push({key:"tag:"+t, label:"#"+t}); } }); }
+  if(snap.smartUK){ smartUK=true; smartChips.push({key:"loc", label:"Location: UK"}); }
+  else if(snap.smartLoc){ smartLoc=snap.smartLoc; smartChips.push({key:"loc", label:"Location: "+snap.smartLoc}); }
+  if(snap.smartMin!=null || snap.smartMax!=null){ smartMin=snap.smartMin!=null?snap.smartMin:null; smartMax=snap.smartMax!=null?snap.smartMax:null; smartChips.push({key:"fol", label:"Followers "+fmtNum(smartMin||0)+" – "+(smartMax?fmtNum(smartMax):"any")}); }
+  if(snap.smartERmin){ smartERmin=snap.smartERmin; smartChips.push({key:"er", label:"ER "+snap.smartERmin+"%+"}); }
+  if(snap.smartMuslim){ smartMuslim=true; smartChips.push({key:"muslim", label:"Has Muslim evidence"}); }
+  if(snap.smartNoMusic){ smartNoMusic=true; smartChips.push({key:"nomusic", label:"No music — music-flagged excluded"}); }
+  if(snap.smartNoFlex){ smartNoFlex=true; smartChips.push({key:"noflex", label:"No flexing"}); }
+  if(snap.smartNoFight){ smartNoFight=true; smartChips.push({key:"nofight", label:"No fighters"}); }
+  if(smartChips.length) smartSearched=true;
   showView("discover");
   render();
+  renderSmartChips();
 }
 
 /* ---------- Saved filter sets (filter panel) ---------- */
@@ -2588,6 +2673,12 @@ document.getElementById("dashQuickForm").addEventListener("submit", function(e){
   showView("discover");
   switchMode("search");
   clearSmart();
+  /* Quick search is a name/keyword search: clear any topic/category filter
+     left over from Discover first, so it cannot stack with the search and
+     hide the match (e.g. "Ronaldo" while a fitness topic filter is on). */
+  document.getElementById("fNiche").value="";
+  document.getElementById("fNiche2").value="";
+  setChip("");
   document.getElementById("q").value=v;
   document.getElementById("qBasic").value=v;
   document.getElementById("fCreator").value=v;
@@ -2710,7 +2801,9 @@ function renderCampMembers(){
   var rows=document.getElementById("campRows");
   if(!l){
     document.getElementById("campCountLine").textContent="The list attached to this campaign no longer exists.";
-    rows.innerHTML=""; document.getElementById("campEmptyBox").hidden=false; return;
+    rows.innerHTML=""; document.getElementById("campEmptyBox").hidden=false;
+    var dbb=document.getElementById("campDraftBox"); if(dbb) dbb.innerHTML="";
+    return;
   }
   var mem=listMembers(l);
   document.getElementById("campCountLine").innerHTML="<b>"+mem.length+"</b> creators from list \u201C"+esc(l.name)+"\u201D — set a status and add notes per creator.";
@@ -2730,6 +2823,35 @@ function renderCampMembers(){
   });
   rows.querySelectorAll("[data-camp-note]").forEach(function(inp){
     inp.addEventListener("change", function(){ cp.notes[inp.getAttribute("data-camp-note")]=inp.value; saveCampaignsStore(); toast("Note saved"); });
+  });
+  renderCampDraft(cp, mem);
+}
+/* The campaign email-draft section is rebuilt on EVERY campaign open, from
+   the campaign's current members — it never depends on state that a
+   logout/login could lose. The preview is filled in with the first member
+   who has a public email; when no member has one, an honest note shows
+   instead of a draft. Nothing is sent from JR Space. */
+function renderCampDraft(cp, mem){
+  var box=document.getElementById("campDraftBox"); if(!box) return;
+  var withEmail=mem.filter(function(c){ return !!c.email; });
+  if(!withEmail.length){
+    box.innerHTML='<div class="outreach-box" style="margin-top:14px"><div class="tags-head">Campaign email draft</div>'+
+    '<p class="mode-note" style="margin:0">No creator in this campaign\u2019s list has a public email yet, so there is nobody to draft to. When a member with a public email is on the list, the draft and its preview will appear here.</p></div>';
+    return;
+  }
+  var first=withEmail[0];
+  var subject="Collaboration opportunity — {handle} ({platform})";
+  var body="Hi {firstname},\n\nI came across your {platform} profile {handle} — really enjoyed your content.\n\nI work with brands looking for creators like you, and I would love to discuss a possible collaboration.\n\nWould you be open to a short call this week to go over the details?\n\nThanks,\n[Your name]";
+  var filledSub=fillVars(subject, first), filledBody=fillVars(body, first);
+  box.innerHTML='<div class="outreach-box" style="margin-top:14px"><div class="tags-head">Campaign email draft</div>'+
+  '<p class="mode-note" style="margin:0 0 10px">'+withEmail.length+' of '+mem.length+' creators in this campaign have a public email. The preview is filled in for '+esc(displayName(first))+' ('+esc(first.email)+') — the variables fill in from each creator\u2019s real data when you send. Edit the wording in your own email app; nothing is sent from JR Space.</p>'+
+  '<label>Email draft preview</label><div class="out-preview" id="campDraftPreview">'+esc("To: "+first.email+"\nSubject: "+filledSub+"\n\n"+filledBody)+'</div>'+
+  '<div class="sheet-actions" style="margin-top:11px"><button class="mini" type="button" id="campDraftCopy">Copy email draft</button></div></div>';
+  var cpBtn=document.getElementById("campDraftCopy");
+  if(cpBtn) cpBtn.addEventListener("click", function(){
+    var txt="To: "+first.email+"\nSubject: "+filledSub+"\n\n"+filledBody;
+    if(navigator.clipboard) navigator.clipboard.writeText(txt);
+    cpBtn.textContent="Copied \u2713"; setTimeout(function(){ cpBtn.textContent="Copy email draft"; },1400);
   });
 }
 document.getElementById("createCampaignForm").addEventListener("submit", function(e){
@@ -2807,6 +2929,13 @@ function renderAuth(){
   }
 }
 function doLogout(){
+  /* Nothing account-specific may leak onto the login screen or into the
+     next account: save this account's history under its own key, clear the
+     in-memory copy, and clear the compare selection + bar. */
+  saveHistoryStore();
+  searchHistory=[];
+  compareKeys=[]; saveCompareStore(); renderCompareBar();
+  closeDetail();
   jrSession=null;
   try{ localStorage.removeItem("jrs_session_v1"); }catch(e){}
   renderAuth();
@@ -2844,9 +2973,12 @@ function openAuth(mode){
 function closeAuth(){ document.getElementById("authOverlay").classList.remove("show"); }
 function finishAuth(u, providerLabel){
   setSession(u.email);
+  searchHistory = lsGet(historyStoreKey()) || [];
   closeAuth();
   renderAuth();
   applyAuthGate();
+  renderDashboard();
+  var svw=document.getElementById("savedView"); if(svw && !svw.hidden) renderSavedView();
   toast("Signed in locally"+(providerLabel?" with "+providerLabel:"")+" as "+u.email);
 }
 function findUserByEmail(email){
@@ -3123,7 +3255,7 @@ function renderCompareBar(){
 function openCompare(){
   var cs=compareKeys.map(function(k){ return findCreator(k); }).filter(function(c){ return !!c; });
   if(cs.length<2){ toast("Pick at least 2 creators to compare"); return; }
-  function erTxt(c){ return (c.er && /[\d.]+%/.test(c.er)) ? esc(c.er) : "—"; }
+  function erTxt(c){ return erText(c); }
   function rowCmp(label, vals){ return '<tr><td class="k">'+label+'</td>'+vals.map(function(v){ return '<td>'+v+'</td>'; }).join("")+'</tr>'; }
   var h='<h3>Compare creators</h3><div class="sub">Side by side — only real data from the database; — means not recorded.</div>';
   h+='<div class="cmp-wrap"><table class="cmp-table"><tr><th class="k"></th>'+cs.map(function(c){ return '<th>'+avatarHTML(c)+'<br><span class="ri-name">'+esc(displayName(c))+'</span><br><a href="'+esc(c.link)+'" target="_blank" rel="noopener">'+esc(c.handle)+'</a></th>'; }).join("")+'</tr>';
@@ -3259,7 +3391,7 @@ function renderTracked(){
   var cs=dedupeCreators(trackedKeys.map(function(k){ return findCreator(k); }).filter(function(c){ return !!c; }));
   var eb=document.getElementById("trackedEmpty"); if(eb) eb.hidden=cs.length>0;
   box.innerHTML=cs.map(function(c){
-    var erTxt=(c.er && /[\d.]+%/.test(c.er)) ? esc(c.er) : "—";
+    var erTxt=erText(c);
     return '<div class="camp-row">'+avatarHTML(c)+''+
     '<span class="cr-main"><span class="ri-name" style="font-weight:700">'+esc(displayName(c))+'</span><br><span class="ri-sub" style="font-size:12.5px;color:var(--muted)">'+esc(c.handle)+' · '+esc(c.platform)+' · '+fmtNum(c.followers)+' followers · ER '+erTxt+' · '+esc(c.location||"Location not recorded")+'</span></span>'+
     '<button class="mini view" type="button" data-tr-view="'+esc(creatorKey(c))+'">View</button>'+
