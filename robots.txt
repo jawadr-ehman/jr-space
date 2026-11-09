@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jawadr-ehman.github.io/jr-space/sitemap.xml
