@@ -172,16 +172,33 @@
   .chip{border:1px solid var(--line);background:var(--chip);color:var(--ink);border-radius:999px;padding:5px 12px;font-size:13px;font-weight:600}
   .chip:hover{border-color:var(--accent)}
   .chip.active{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-  .thead{display:grid;grid-template-columns:minmax(250px,1fr) 100px 118px 90px 104px 78px 176px;gap:10px;align-items:center;padding:4px 14px 10px;border-bottom:2px solid var(--line);margin-bottom:2px}
+  .thead{display:grid;grid-template-columns:minmax(220px,1fr) 108px 96px 84px 202px;gap:12px;align-items:center;padding:2px 16px 9px;margin-bottom:2px}
   .thead .th{font-size:13px;font-weight:700;color:var(--muted)}
   .thead .th.num{text-align:right}
-  .sortbtn{border:0;background:transparent;font-size:13px;font-weight:700;color:var(--ink);padding:2px 0}
-  .sortbtn:hover{color:var(--accent-dark)}
-  .sortbtn .arr{color:var(--accent);font-size:11px}
-  .rows{display:flex;flex-direction:column;gap:9px}
-  .trow{display:grid;grid-template-columns:minmax(250px,1fr) 100px 118px 90px 104px 78px 176px;gap:10px;align-items:start;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+  .sortbtn{border:0;background:transparent;font-size:13px;font-weight:700;color:var(--muted);padding:2px 0}
+  .sortbtn:hover{color:var(--ink)}
+  .sortbtn .arr{color:var(--muted);font-size:11px}
+  .rows{display:flex;flex-direction:column;gap:10px}
+  .trow{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
   .trow:hover{border-color:#c3d2e6}
-  .rcell{display:flex;gap:11px;align-items:center;min-width:0}
+  .mhead{display:grid;grid-template-columns:minmax(220px,1fr) 108px 96px 84px 202px;gap:12px;align-items:center}
+  .mmetric{text-align:right;min-width:0}
+  .mmetric b{display:block;font-family:"Sora",sans-serif;font-weight:800;font-size:16.5px;line-height:1.2;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .mmetric span{display:block;font-size:12px;color:var(--muted);font-weight:500;margin-top:1px}
+  .mact{display:flex;gap:8px;justify-content:flex-end;align-items:center}
+  .mact .mini{padding:8px 14px;border-radius:9px;font-size:13.5px}
+  .mini.save-main{background:var(--accent);border-color:var(--accent);color:#fff}
+  .mini.save-main:hover{background:var(--accent-dark);border-color:var(--accent-dark);color:#fff}
+  .msub{display:flex;flex-wrap:wrap;gap:7px 14px;align-items:center;border-top:1px solid var(--surface2);padding-top:9px}
+  .ms-info{display:flex;gap:6px 16px;flex-wrap:wrap;align-items:center;min-width:0;font-size:13px;color:var(--muted)}
+  .ms-info .ms-k{font-weight:600}
+  .ms-info b{color:var(--ink);font-weight:600;overflow-wrap:anywhere}
+  .ms-info a{font-weight:600;text-decoration:none}
+  .ms-info a:hover{text-decoration:underline}
+  .ms-act{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
+  .ms-act .mini{padding:5px 11px;font-size:12.5px;border-radius:999px}
+  .trow .avatar,.ccard .avatar{width:54px;height:54px;font-size:17px}
+  .rcell{display:flex;gap:12px;align-items:center;min-width:0}
   .avatar{width:44px;height:44px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-family:"Sora",sans-serif;font-weight:800;font-size:15px;color:#fff;position:relative;overflow:hidden}
   .avatar-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;border-radius:50%}
   .reels-wrap{margin-top:2px}
@@ -214,10 +231,10 @@
   .av-ig{background:#9c4a63} .av-tt{background:#1f2937} .av-yt{background:#b03a3a}
   .av-x{background:#111827} .av-tw{background:#6d4fa1} .av-li{background:#2f5d8a} .av-th{background:#3d3d3d}
   .rwho{min-width:0;display:flex;flex-direction:column}
-  .rname{font-family:"Sora",sans-serif;font-weight:700;font-size:15.5px;line-height:1.25;overflow-wrap:anywhere;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+  .rname{font-family:"Sora",sans-serif;font-weight:700;font-size:16px;line-height:1.25;overflow-wrap:anywhere;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
   .vbadge{flex:none;vertical-align:-2px}
-  .rhandle{font-size:13.5px;color:var(--accent);text-decoration:none;font-weight:600;overflow-wrap:anywhere}
-  .rhandle:hover{text-decoration:underline}
+  .rhandle{font-size:13.5px;color:var(--muted);text-decoration:none;font-weight:500;overflow-wrap:anywhere}
+  .rhandle:hover{color:var(--accent-dark);text-decoration:underline}
   .rmeta{font-size:12.5px;color:var(--muted);overflow-wrap:anywhere;display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:1px}
   .rfol{font-family:"Sora",sans-serif;font-weight:800;font-size:15.5px;text-align:right;padding-top:1px;font-variant-numeric:tabular-nums}
   .rer{font-weight:700;font-size:14.5px;text-align:right;padding-top:2px;font-variant-numeric:tabular-nums}
@@ -339,8 +356,11 @@
   .pager{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:14px}
   .pager .pinfo{font-size:13.5px;color:var(--muted);font-weight:600}
   .pager select{font-size:14px;padding:7px 9px;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--ink)}
-  .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
-  .ccard{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fff;display:flex;flex-direction:column;gap:8px}
+  .cards-grid{display:flex;flex-direction:column;gap:12px}
+  .ccard{border:1px solid var(--line);border-radius:12px;padding:16px;background:#fff;display:flex;flex-direction:column;gap:10px}
+  .mhead-card{grid-template-columns:minmax(200px,1fr) 108px 96px 84px}
+  .ccard .cact{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+  .ccard .cact .mini{padding:8px 14px;border-radius:9px;font-size:13.5px}
   .ccard:hover{border-color:#c3d2e6}
   .ccard .chead{display:flex;gap:10px;align-items:center;min-width:0}
   .ccard .cstats{display:flex;gap:14px;font-size:13.5px;color:var(--muted);flex-wrap:wrap}
@@ -426,13 +446,14 @@
 
   /* ===== Responsive ===== */
   @media (max-width:1480px){
-    .thead,.trow{grid-template-columns:minmax(230px,1fr) 92px 76px 84px 176px}
-    .rlink,.rmail,.th-link,.th-mail{display:none}
-    .rc-line{display:block;flex-basis:100%}
+    .thead,.mhead{grid-template-columns:minmax(210px,1fr) 96px 84px 76px 190px}
+    .mhead-card{grid-template-columns:minmax(190px,1fr) 96px 84px 76px}
   }
   @media (max-width:1080px){
     .dash{grid-template-columns:250px minmax(0,1fr)}
-    .thead,.trow{grid-template-columns:minmax(200px,1fr) 84px 70px 78px 160px}
+    .thead,.mhead{grid-template-columns:minmax(190px,1fr) 88px 76px 70px 178px}
+    .mhead-card{grid-template-columns:minmax(170px,1fr) 88px 76px 70px}
+    .mact .mini{padding:8px 10px}
   }
   @media (max-width:860px){
     .dash{grid-template-columns:1fr}
@@ -449,14 +470,13 @@
     .side-foot{display:none}
     .main{margin-left:0}
     .thead{display:none}
-    .trow{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"who fol" "who er" "who views" "act act"}
-    .rcell{grid-area:who}
-    .rfol{grid-area:fol;font-size:14.5px}
-    .rer{grid-area:er;font-size:13px;color:var(--muted)}
-    .rer:before{content:"Engagement ";font-weight:600}
-    .rviews{grid-area:views;font-size:13px;color:var(--muted)}
-    .rviews:before{content:"Views ";font-weight:600}
-    .ract{grid-area:act;grid-template-columns:repeat(3,1fr)}
+    .mhead,.mhead-card{display:flex;flex-wrap:wrap;gap:10px 24px;align-items:center}
+    .mhead .rcell{flex:1 1 100%}
+    .mmetric{text-align:left}
+    .mmetric b{font-size:15.5px}
+    .mact{margin-left:auto}
+    .ms-act{margin-left:0}
+    .ms-act .mini{flex:1 1 auto;text-align:center}
     .searchline .btn{width:100%;min-height:48px}
     .kv{grid-template-columns:105px 1fr}
     .topbar,.dbstrip,.workspace,.lists-wrap,footer{margin-left:10px;margin-right:10px}
@@ -900,9 +920,11 @@
 
       <section class="results" aria-label="Results">
         <div class="res-toolbar">
+          <div class="profile-count" id="profileCount"></div>
           <div class="spacer"></div>
-          <div class="view-toggle" role="group" aria-label="Results view">
-            <button class="vt-btn active" type="button" id="viewTableBtn">Table</button>
+          <button class="btn2" type="button" id="bulkSaveBtn">+ Bulk save</button>
+          <div class="view-toggle" role="group" aria-label="Display">
+            <button class="vt-btn active" type="button" id="viewTableBtn">List</button>
             <button class="vt-btn" type="button" id="viewCardBtn">Cards</button>
           </div>
           <button class="btn2" type="button" id="saveSearchBtn">Save search</button>
@@ -929,10 +951,8 @@
         </div>
         <div class="thead" aria-hidden="true">
           <div class="th" id="thCreator">Creator</div>
-          <div class="th th-link">Link</div>
-          <div class="th th-mail">Mail</div>
           <div class="th num"><button class="sortbtn" type="button" id="sortFolBtn">Followers <span class="arr" id="sortFolArr">▼</span></button></div>
-          <div class="th num"><button class="sortbtn" type="button" id="sortERBtn">Engagement % <span class="arr" id="sortERArr">↕</span></button></div>
+          <div class="th num"><button class="sortbtn" type="button" id="sortERBtn">ER% <span class="arr" id="sortERArr">↕</span></button></div>
           <div class="th num">Views</div>
           <div class="th"></div>
         </div>
@@ -1631,6 +1651,7 @@ function anyFiltersActive(){
 
 /* ---------- Result rows ---------- */
 var currentList=[];
+var lastShown=[];
 var LIST_CTX=null;
 var viewMode="table";
 try{ viewMode = localStorage.getItem("jrs_viewmode") || "table"; }catch(e){}
@@ -1643,18 +1664,20 @@ function cardHTML(c, idx){
   var erTxt = erText(c);
   var savedIn = listsContaining(c).length;
   return '<div class="ccard">'+
-    '<div class="chead">'+avatarHTML(c)+''+
+    '<div class="mhead mhead-card">'+
+    '<div class="rcell">'+avatarHTML(c)+''+
     '<span class="rwho"><span class="rname">'+esc(displayName(c))+(c.status==="verified_pass"?VBADGE:"")+'</span>'+
-    '<a class="rhandle" href="'+esc(c.link)+'" target="_blank" rel="noopener">'+esc(c.handle)+'</a></span></div>'+
-    '<span class="rmeta"><span class="badge b-platform">'+esc(c.platform)+'</span>'+(c.niche?'<span class="badge b-niche">'+esc(c.niche)+'</span>':'')+'<span class="badge '+sm.cls+'">'+sm.label+'</span>'+tagBadges(c)+screenBadge(c)+'</span>'+
-    '<div class="cstats"><span>Followers <b>'+fmtNum(c.followers)+'</b></span><span>ER <b>'+erTxt+'</b></span><span>Views <b>'+fmtNum(c.views)+'</b></span></div>'+
-    '<div class="cstats"><span>'+(c.location?esc(c.location):"Location not recorded")+'</span></div>'+
+    '<a class="rhandle" href="'+esc(c.link)+'" target="_blank" rel="noopener">'+esc(c.handle)+'</a>'+
+    '<span class="rmeta"><span class="badge b-platform">'+esc(c.platform)+'</span>'+(c.niche?'<span class="badge b-niche">'+esc(c.niche)+'</span>':'')+'<span class="badge '+sm.cls+'">'+sm.label+'</span><span>'+(c.location?esc(c.location):"Location not recorded")+'</span>'+tagBadges(c)+screenBadge(c)+'</span></span></div>'+
+    '<div class="mmetric" title="'+(c.followers?fmtInt(c.followers):"0")+' followers"><b>'+fmtNum(c.followers)+'</b><span>Followers</span></div>'+
+    '<div class="mmetric"><b>'+erTxt+'</b><span>Engagement %</span></div>'+
+    '<div class="mmetric" title="'+(c.views?fmtInt(c.views)+" average views":"Average views not recorded")+'"><b>'+fmtNum(c.views)+'</b><span>Views</span></div>'+
+    '</div>'+
     (c.bio? '<div class="cbio"><span class="cbio-k">Bio</span><span class="cbio-t">'+esc(c.bio)+'</span></div>' : '')+
     verifyNoteHTML(c)+
-    reelsHTML(c)+
-    '<div class="cstats"><span>Mail <b>'+(c.email? esc(c.email) : '—')+'</b></span></div>'+
-    '<div class="cstats"><span>Profile <b>'+(c.link? '<a href="'+esc(c.link)+'" target="_blank" rel="noopener">'+esc(linkLabel(c))+'</a>' : '—')+'</b></span></div>'+
-    '<div class="cact"><button class="mini keep-btn'+(screeningDecision(c)==="keep"?' active':'')+'" type="button" data-keep="'+idx+'">'+(screeningDecision(c)==="keep"?'✓ Kept':'Keep')+'</button><button class="mini reject-btn'+(screeningDecision(c)==="reject"?' active':'')+'" type="button" data-reject="'+idx+'">'+(screeningDecision(c)==="reject"?'✕ Rejected':'Reject')+'</button><button class="mini save-btn'+(savedIn?' saved':'')+'" type="button" data-save="'+idx+'">'+(savedIn? '★ Saved ('+savedIn+')' : 'Save to list')+'</button><button class="mini view" type="button" data-detail="'+idx+'">View</button><button class="mini cmp-btn'+(isCompared(c)?' active':'')+'" type="button" data-compare="'+idx+'">'+(isCompared(c)?'✓ Comparing':'Compare')+'</button><button class="mini track-btn'+(isTracked(c)?' active':'')+'" type="button" data-track="'+idx+'">'+(isTracked(c)?'✓ Tracked':'Track')+'</button></div>'+
+    reelsHTML(c, true)+
+    '<div class="msub"><span class="ms-info"><span><span class="ms-k">Mail:</span> <b>'+(c.email? esc(c.email) : '—')+'</b></span><span><span class="ms-k">Link:</span> '+(c.link? '<a href="'+esc(c.link)+'" target="_blank" rel="noopener">'+esc(linkLabel(c))+'</a>' : '—')+'</span></span></div>'+
+    '<div class="cact"><button class="mini save-btn save-main'+(savedIn?' saved':'')+'" type="button" data-save="'+idx+'">'+(savedIn? '★ Saved ('+savedIn+')' : 'Save to list')+'</button><button class="mini view" type="button" data-detail="'+idx+'">View</button><button class="mini keep-btn'+(screeningDecision(c)==="keep"?' active':'')+'" type="button" data-keep="'+idx+'">'+(screeningDecision(c)==="keep"?'✓ Kept':'Keep')+'</button><button class="mini reject-btn'+(screeningDecision(c)==="reject"?' active':'')+'" type="button" data-reject="'+idx+'">'+(screeningDecision(c)==="reject"?'✕ Rejected':'Reject')+'</button><button class="mini cmp-btn'+(isCompared(c)?' active':'')+'" type="button" data-compare="'+idx+'">'+(isCompared(c)?'✓ Comparing':'Compare')+'</button><button class="mini track-btn'+(isTracked(c)?' active':'')+'" type="button" data-track="'+idx+'">'+(isTracked(c)?'✓ Tracked':'Track')+'</button></div>'+
   '</div>';
 }
 function renderPager(totalPages){
@@ -1681,6 +1704,7 @@ function render(resetLimit){
   if(currentPage<1) currentPage=1;
   var start=(currentPage-1)*pageSize;
   var shown=currentList.slice(start, start+pageSize);
+  lastShown=shown;
   var grid=document.getElementById("grid");
   grid.className = viewMode==="card" ? "cards-grid" : "rows";
   grid.innerHTML=shown.map(viewMode==="card" ? cardHTML : rowHTML).join("");
@@ -1695,6 +1719,7 @@ function render(resetLimit){
     else { document.getElementById("emptyTitle").textContent="No creator matched"; document.getElementById("emptyText").textContent="Try loosening the filters or changing your search term."; }
   }
   var thc=document.getElementById("thCreator"); if(thc) thc.textContent="Creator "+fmtInt(currentList.length);
+  var pc=document.getElementById("profileCount"); if(pc) pc.textContent=fmtInt(currentList.length)+" profiles";
   var noteTxt = anyFiltersActive() ? "Filters are active — use Clear filters to reset." : "";
   if(!DATA_COMPLETE) noteTxt = (noteTxt ? noteTxt+" " : "") + "More creators are still loading — results update automatically.";
   document.getElementById("resultsNote").textContent = noteTxt;
@@ -1709,16 +1734,19 @@ function rowHTML(c, idx){
   var erTxt = erText(c);
   var savedIn = listsContaining(c).length;
   return '<div class="trow">'+
+    '<div class="mhead">'+
     '<div class="rcell">'+avatarHTML(c)+''+
     '<span class="rwho"><span class="rname">'+esc(displayName(c))+(c.status==="verified_pass"?VBADGE:"")+'</span>'+
     '<a class="rhandle" href="'+esc(c.link)+'" target="_blank" rel="noopener">'+esc(c.handle)+'</a>'+
-    '<span class="rmeta"><span class="badge b-platform">'+esc(c.platform)+'</span>'+(c.niche?'<span class="badge b-niche">'+esc(c.niche)+'</span>':'')+'<span class="badge '+sm.cls+'">'+sm.label+'</span><span>'+(c.location?esc(c.location):"Location not recorded")+'</span>'+tagBadges(c)+screenBadge(c)+verifyNoteInline(c)+'<span class="rc-line"><b>Link:</b> '+(c.link? '<a href="'+esc(c.link)+'" target="_blank" rel="noopener">'+esc(linkLabel(c))+'</a>' : '—')+'</span><span class="rc-line"><b>Mail:</b> '+(c.email? esc(c.email) : '—')+'</span></span></span></div>'+
-    '<div class="rlink">'+(c.link? '<a href="'+esc(c.link)+'" target="_blank" rel="noopener" title="'+esc(c.link)+'">'+esc(linkLabel(c))+'</a>' : '—')+'</div>'+
-    '<div class="rmail"'+(c.email? ' title="'+esc(c.email)+'"' : '')+'>'+(c.email? esc(c.email) : '—')+'</div>'+
-    '<div class="rfol" title="'+(c.followers?fmtInt(c.followers):"0")+' followers">'+fmtNum(c.followers)+'</div>'+
-    '<div class="rer">'+erTxt+'</div>'+
-    '<div class="rviews" title="'+(c.views?fmtInt(c.views)+" average views":"Average views not recorded")+'">'+fmtNum(c.views)+'</div>'+
-    '<div class="ract"><button class="mini keep-btn'+(screeningDecision(c)==="keep"?' active':'')+'" type="button" data-keep="'+idx+'">'+(screeningDecision(c)==="keep"?'✓ Kept':'Keep')+'</button><button class="mini reject-btn'+(screeningDecision(c)==="reject"?' active':'')+'" type="button" data-reject="'+idx+'">'+(screeningDecision(c)==="reject"?'✕ Rejected':'Reject')+'</button><button class="mini save-btn'+(savedIn?' saved':'')+'" type="button" data-save="'+idx+'">'+(savedIn? '★ Saved ('+savedIn+')' : 'Save to list')+'</button>'+(LIST_CTX? '<button class="mini" type="button" data-remove="'+idx+'">Remove from list</button>' : '')+'<button class="mini view" type="button" data-detail="'+idx+'">View</button><button class="mini cmp-btn'+(isCompared(c)?' active':'')+'" type="button" data-compare="'+idx+'">'+(isCompared(c)?'✓ Comparing':'Compare')+'</button><button class="mini track-btn'+(isTracked(c)?' active':'')+'" type="button" data-track="'+idx+'">'+(isTracked(c)?'✓ Tracked':'Track')+'</button></div>'+
+    '<span class="rmeta"><span class="badge b-platform">'+esc(c.platform)+'</span>'+(c.niche?'<span class="badge b-niche">'+esc(c.niche)+'</span>':'')+'<span class="badge '+sm.cls+'">'+sm.label+'</span><span>'+(c.location?esc(c.location):"Location not recorded")+'</span>'+tagBadges(c)+screenBadge(c)+'</span></span></div>'+
+    '<div class="mmetric" title="'+(c.followers?fmtInt(c.followers):"0")+' followers"><b>'+fmtNum(c.followers)+'</b></div>'+
+    '<div class="mmetric"><b>'+erTxt+'</b></div>'+
+    '<div class="mmetric" title="'+(c.views?fmtInt(c.views)+" average views":"Average views not recorded")+'"><b>'+fmtNum(c.views)+'</b></div>'+
+    '<div class="mact"><button class="mini save-btn save-main'+(savedIn?' saved':'')+'" type="button" data-save="'+idx+'">'+(savedIn? '★ Saved ('+savedIn+')' : 'Save to list')+'</button><button class="mini view" type="button" data-detail="'+idx+'">View</button></div>'+
+    '</div>'+
+    '<div class="msub"><span class="ms-info"><span><span class="ms-k">Mail:</span> <b>'+(c.email? esc(c.email) : '—')+'</b></span><span><span class="ms-k">Link:</span> '+(c.link? '<a href="'+esc(c.link)+'" target="_blank" rel="noopener">'+esc(linkLabel(c))+'</a>' : '—')+'</span>'+verifyNoteInline(c)+'</span>'+
+    '<span class="ms-act"><button class="mini keep-btn'+(screeningDecision(c)==="keep"?' active':'')+'" type="button" data-keep="'+idx+'">'+(screeningDecision(c)==="keep"?'✓ Kept':'Keep')+'</button><button class="mini reject-btn'+(screeningDecision(c)==="reject"?' active':'')+'" type="button" data-reject="'+idx+'">'+(screeningDecision(c)==="reject"?'✕ Rejected':'Reject')+'</button>'+(LIST_CTX? '<button class="mini" type="button" data-remove="'+idx+'">Remove from list</button>' : '')+'<button class="mini cmp-btn'+(isCompared(c)?' active':'')+'" type="button" data-compare="'+idx+'">'+(isCompared(c)?'✓ Comparing':'Compare')+'</button><button class="mini track-btn'+(isTracked(c)?' active':'')+'" type="button" data-track="'+idx+'">'+(isTracked(c)?'✓ Tracked':'Track')+'</button></span></div>'+
+    reelsHTML(c)+
   '</div>';
 }
 function wireCardGrid(scope, list){
@@ -1980,6 +2008,42 @@ function openSavePicker(c){
     recordRecentSaved(c);
     saveListsStore(); updateListsTab(); render(); toast("\u201C"+nm+"\u201D list created, creator saved");
     openSavePicker(c);
+  });
+}
+function bulkAddToList(listId){
+  var l=getList(listId); if(!l) return;
+  var added=0, skipped=0;
+  lastShown.forEach(function(c){
+    if(isExcluded(c)){ skipped++; return; }
+    var k=creatorKey(c);
+    if(l.keys.indexOf(k)!==-1){ skipped++; return; }
+    l.keys.push(k); recordRecentSaved(c); added++;
+  });
+  saveListsStore(); updateListsTab(); closeDetail(); render(false);
+  toast(added+" creator"+(added===1?"":"s")+" saved to \u201C"+l.name+"\u201D"+(skipped? " · "+skipped+" skipped (already in the list or excluded)":""));
+}
+function openBulkSave(){
+  if(!lastShown.length){ toast("No creators on this page to save yet"); return; }
+  var sheet=document.getElementById("sheet");
+  var h="<h3>Bulk save</h3>"+
+    '<div class="sub">Save all '+lastShown.length+' creators shown on this page to one list. Creators already in the list are skipped — duplicates are blocked.</div>';
+  savedLists.forEach(function(l){
+    h+='<div class="pick-row"><span class="pn">'+esc(l.name)+'</span><span class="pc">'+l.keys.length+' creators</span><button class="mini" type="button" data-bulk-pick="'+esc(l.id)+'">Save all here</button></div>';
+  });
+  h+='<div class="pick-row"><input id="bulkNewName" type="text" placeholder="New list name" style="flex:1;font:inherit;font-size:14.5px;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink)" /><button class="mini" type="button" id="bulkCreate">+ Create and save all</button></div>';
+  h+='<button class="close" type="button" id="sheetClose">Close</button>';
+  sheet.innerHTML=h;
+  document.getElementById("overlay").classList.add("show");
+  document.getElementById("sheetClose").addEventListener("click", closeDetail);
+  sheet.querySelectorAll("[data-bulk-pick]").forEach(function(btn){
+    btn.addEventListener("click", function(){ bulkAddToList(btn.getAttribute("data-bulk-pick")); });
+  });
+  document.getElementById("bulkCreate").addEventListener("click", function(){
+    var nm=document.getElementById("bulkNewName").value.trim(); if(!nm) return;
+    var id="list-"+Date.now();
+    savedLists.push({id:id, name:nm, keys:[]});
+    saveListsStore(); updateListsTab();
+    bulkAddToList(id);
   });
 }
 function exportCSV(list, filename){
@@ -2717,6 +2781,7 @@ document.getElementById("dashQuickForm").addEventListener("submit", function(e){
 /* ---------- View toggle ---------- */
 document.getElementById("viewTableBtn").addEventListener("click", function(){ viewMode="table"; try{ localStorage.setItem("jrs_viewmode","table"); }catch(e){} render(false); });
 document.getElementById("viewCardBtn").addEventListener("click", function(){ viewMode="card"; try{ localStorage.setItem("jrs_viewmode","card"); }catch(e){} render(false); });
+var bsb=document.getElementById("bulkSaveBtn"); if(bsb) bsb.addEventListener("click", openBulkSave);
 
 /* ---------- Saved searches & history ---------- */
 function openSaveSearchDialog(){
