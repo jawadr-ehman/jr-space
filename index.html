@@ -91,10 +91,6 @@
   .nl-parsed:empty{display:none}
   .parsed-pill{font-size:12.5px;font-weight:700;background:var(--accent);color:#fff;border-radius:999px;padding:4px 10px}
   .parsed-clear{font-size:12.5px;font-weight:700;background:transparent;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:4px 10px}
-  .topic-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:14px 22px 2px}
-  .topic-bar .lbl{font-size:13px;color:var(--muted);font-weight:700}
-  .topic-chip{border:1px solid #cfddfb;background:var(--accent-soft);color:var(--accent-dark);border-radius:999px;padding:5px 12px;font-size:13px;font-weight:700}
-  .topic-chip:hover{border-color:var(--accent);background:#dbe7fd}
   .criteria{margin-top:13px;display:flex;flex-wrap:wrap;gap:7px}
   .criteria span{font-size:12.5px;font-weight:600;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px 10px}
   .criteria span b{color:var(--accent-dark)}
@@ -721,7 +717,6 @@
         <button class="btn" type="submit">AI Search</button>
       </form>
       <div class="nl-parsed" id="nlParsed" aria-live="polite"></div>
-      <p class="mode-note">Type any topic or a #hashtag — e.g. <b>fitness</b> or <b>#dailyroutine</b> — and every creator on that topic appears below. No limits at all: search any topic and get every matching creator, unlimited. Export the matches with the CSV button in the filter panel.</p>
     </div>
 
     <div class="mode-panel" id="searchPanel" hidden>
@@ -734,8 +729,6 @@
       </form>
       <p class="mode-note">Type a topic (fitness) or a hashtag (#fitness) and creators on that topic appear below. Names, @handles, cities and emails work too — for smart understanding, use the AI Search tab.</p>
     </div>
-
-    <div class="topic-bar" id="topicRow" aria-label="Popular topics and hashtags"></div>
 
     <div class="dash">
       <aside class="leftcol" aria-label="Filters">
@@ -1215,7 +1208,6 @@ function showDataError(){
 }
 function refreshAfterData(){
   fillNiches();
-  buildTopicChips();
   renderCompareBar();
   updateListsTab();
   render(false);
@@ -1323,8 +1315,8 @@ function linkLabel(c){ if(!c.link) return "—"; return String(c.link).replace(/
 function erKind(c){ if(c.er && /hidden/i.test(c.er)) return "hidden"; var v=erValue(c); if(v===null) return "unknown"; return v>=3?"ge3":"lt3"; }
 function statusMeta(s){ if(s==="verified_pass") return {cls:"b-pass",label:"✓ Verified pass"}; if(s==="verified_fail") return {cls:"b-fail",label:"✕ Verified fail"}; if(s==="unverified") return {cls:"b-unv",label:"○ Unverified"}; return {cls:"b-pend",label:"◐ Pending check"}; }
 function isNotVerified(c){ return !!c && c.status!=="verified_pass" && c.status!=="verified_fail"; }
-function verifyNoteHTML(c){ if(!isNotVerified(c)) return ""; if(c.status==="pending") return '<div class="vnote pend">Not verified yet — check pending. Information will appear after verification.</div>'; return '<div class="vnote">Not verified yet — information will appear after verification.</div>'; }
-function verifyNoteInline(c){ if(!isNotVerified(c)) return ""; if(c.status==="pending") return '<span class="vnote-inline pend">Not verified yet — information will appear after verification</span>'; return '<span class="vnote-inline">Not verified yet — information will appear after verification</span>'; }
+function verifyNoteHTML(c){ return ""; }
+function verifyNoteInline(c){ return ""; }
 function initials(c){ var n=(c.name||c.handle.replace("@","")).trim(); var parts=n.split(/\s+/); var s=(parts[0]?parts[0].charAt(0):"")+(parts[1]?parts[1].charAt(0):""); return s.toUpperCase()||"—"; }
 function displayName(c){ return c.name && c.name.trim() ? c.name : c.handle; }
 function avatarClass(c){ if(c.platform==="Instagram") return "av-ig"; if(c.platform==="YouTube") return "av-yt"; if(c.platform==="X") return "av-x"; if(c.platform==="Twitch") return "av-tw"; if(c.platform==="LinkedIn") return "av-li"; if(c.platform==="Threads") return "av-th"; return "av-tt"; }
@@ -1844,7 +1836,6 @@ function openDetail(c){
   var h = '<div class="detail-head">'+avatarHTML(c,"avatar-lg")+'<div><h3>'+esc(displayName(c))+(c.status==="verified_pass"?" "+VBADGE:"")+'</h3>'+
     '<div class="sub" style="margin-bottom:0"><a href="'+esc(c.link)+'" target="_blank" rel="noopener">'+esc(c.handle)+'</a> · '+esc(c.platform)+' · '+esc(fl.txt)+(fl.fresh?' <span class="badge b-pass">Fresh today</span>':'')+'</div></div></div>';
   h += '<div class="badges" style="margin-bottom:12px"><span class="badge b-platform">'+esc(c.platform)+'</span><span class="badge '+sm.cls+'">'+sm.label+'</span><span class="badge b-niche">Niche: '+esc(c.niche)+'</span></div>';
-  if(isNotVerified(c)) h += '<div class="detail-note'+(c.status==="pending"?' pend':'')+'"><span class="k">'+(c.status==="pending"?"Pending check":"Not verified yet")+'</span>This creator has not been live-checked yet, so their information is incomplete. Information will appear after verification — nothing shown here is estimated or invented.</div>';
   if(c.status==="verified_fail" && c.fail_reason) h += '<div class="detail-fail"><span class="k">Fail reason</span>'+esc(c.fail_reason)+'</div>';
   if(c.muslim_evidence) h += '<div class="detail-ev"><span class="k">Evidence</span>'+esc(c.muslim_evidence)+'</div>';
   if(flags.length) h += '<div class="flags-row" style="margin:0 0 12px">'+flags.map(function(f){ return '<span class="badge '+f.cls+'">'+esc(f.t)+'</span>'; }).join("")+'</div>';
@@ -2255,26 +2246,6 @@ document.getElementById("qBasic").addEventListener("input", function(){ plainMir
 document.getElementById("fCreator").addEventListener("input", function(){ plainMirror(this.value, "fCreator"); });
 document.getElementById("q").addEventListener("input", function(){ var v=this.value.trim(); if(v.indexOf(" ")===-1) render(); });
 document.getElementById("fBio").addEventListener("input", function(){ render(); });
-
-/* ---------- Popular topics & hashtags — built from the topics in the data ---------- */
-function buildTopicChips(){
-  var row=document.getElementById("topicRow"); if(!row) return;
-  var counts={};
-  CREATORS.forEach(function(c){ nicheTokens(c).forEach(function(tok){ var k=tok.trim(); if(k.length>=3) counts[k]=(counts[k]||0)+1; }); });
-  var tops=Object.keys(counts).filter(function(k){ return counts[k]>=5; }).sort(function(a,b){ return counts[b]-counts[a]; }).slice(0,12);
-  if(!tops.length){ row.innerHTML=""; return; }
-  row.innerHTML='<span class="lbl">Popular topics &amp; hashtags:</span>'+tops.map(function(t){
-    return '<button class="topic-chip" type="button" data-topic="'+esc(t)+'">#'+esc(t.replace(/[\s\/]+/g,""))+'</button>';
-  }).join("");
-  row.querySelectorAll("[data-topic]").forEach(function(b){
-    b.addEventListener("click", function(){ runTopicSearch(b.getAttribute("data-topic")); });
-  });
-}
-function runTopicSearch(topic){
-  switchMode("ai");
-  document.getElementById("q").value="#"+String(topic||"").replace(/[\s\/]+/g,"");
-  applySmartSearch();
-}
 
 /* ---------- Filter listeners ---------- */
 ["fStatus","fLocation","fLastPost","fSort","fScreen"].forEach(function(id){
