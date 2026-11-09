@@ -1,0 +1,20 @@
+name: tmp-rename
+on:
+  push:
+    paths:
+      - '.github/workflows/tmp-rename.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  rename:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Rename jr-space.html to index.html
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git mv -f jr-space.html index.html
+          git commit -m "Replace index.html with updated jr-space.html (fixed Discover table layout)"
+          git push
