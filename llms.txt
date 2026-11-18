@@ -1,0 +1,25 @@
+# JR Space
+
+> JR Space is a free influencer finder and creator data search tool. Search creators by niche, followers, location, views, likes and engagement. Free Modash and EasyKOL alternative, developed by Jawad Rehman and his team.
+
+- Live site: https://jawadr-ehman.github.io/jr-space/
+- Source: https://github.com/jawadr-ehman/jr-space
+- Free, no sign-up required, no API key, no limits, no paywall.
+
+## What it does
+
+- Search creators by keyword, topic or #hashtag, platform, location, status, and free From–To ranges for followers, views, likes and engagement.
+- Platforms: Instagram, TikTok, YouTube, X, Twitch, LinkedIn, Threads.
+- Every creator shows name, username, profile link, public email (only if the creator published it), followers, views and Engagement %. Missing values are shown as "—" and are never invented.
+- Filters: keyword/AI search, followers, views, likes, topic, hashtag, location (250 countries), status (Verified, Failed, Pending, Unverified).
+- Features: Dashboard, Table/Cards views, Lists, Campaigns, Saved Searches, Watchlist, creator comparison (up to 3), CRM tags, outreach email drafts.
+
+## Data
+
+- Own database built from public profiles and live checks only. No data copied from Modash, EasyKOL or any paid platform.
+- Data files: https://jawadr-ehman.github.io/jr-space/assets/creators-meta.json and assets/creators-0.json through creators-8.json.
+- Free Search API: search the same database by keyword, topic or #hashtag, platform, location, status and free follower/view/like/engagement ranges. No API key, no limits.
+
+## Owner
+
+- JR Space is developed by Jawad Rehman and his team.
