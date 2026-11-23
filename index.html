@@ -1111,10 +1111,6 @@
                 <option value="30">Last 30 days</option>
               </select>
             </div>
-            <div class="field">
-              <label for="fNiche2">Categories</label>
-              <select id="fNiche2"><option value="">Any</option></select>
-            </div>
             <label class="toggle-row" for="fVerifiedOnly">
               <span class="switch"><input type="checkbox" id="fVerifiedOnly" /></span>
               <span class="tlabel">Show only verified creators</span>
@@ -1477,7 +1473,6 @@ function showDataError(){
   var b=document.getElementById("dataRetry"); if(b) b.addEventListener("click", loadCreatorData);
 }
 function refreshAfterData(){
-  fillNiches();
   renderCompareBar();
   updateListsTab();
   render(false);
@@ -1623,14 +1618,6 @@ var VBADGE = '<svg class="vbadge" width="16" height="16" viewBox="0 0 24 24" rol
 
 
 /* ---------- Filter option fillers ---------- */
-function fillNiches(){
-  var seen={}; CREATORS.forEach(function(c){ if(c.niche) seen[c.niche]=true; });
-  var sel=document.getElementById("fNiche2"); if(!sel) return;
-  var cur=sel.value;
-  sel.innerHTML='<option value="">Any</option>';
-  Object.keys(seen).sort().forEach(function(n){ var o=document.createElement("option"); o.value=n; o.textContent=n.charAt(0).toUpperCase()+n.slice(1); sel.appendChild(o); });
-  if(cur && seen[cur]) sel.value=cur;
-}
 var COUNTRIES = ["Afghanistan", "Aland Islands", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Antarctica", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bonaire, Sint Eustatius and Saba", "Bosnia and Herzegovina", "Botswana", "Bouvet Island", "Brazil", "British Indian Ocean Territory", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Cayman Islands", "Central African Republic", "Chad", "Chile", "China", "Christmas Island", "Cocos (Keeling) Islands", "Colombia", "Comoros", "Congo", "Cook Islands", "Costa Rica", "Croatia", "Cuba", "Curaçao", "Cyprus", "Czech Republic", "Democratic Republic of the Congo", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia", "Falkland Islands", "Faroe Islands", "Fiji Islands", "Finland", "France", "French Guiana", "French Polynesia", "French Southern Territories", "Gabon", "Georgia", "Germany", "Ghana", "Gibraltar", "Greece", "Greenland", "Grenada", "Guadeloupe", "Guam", "Guatemala", "Guernsey", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Heard Island and McDonald Islands", "Honduras", "Hong Kong S.A.R.", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Ivory Coast", "Jamaica", "Japan", "Jersey", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Kosovo", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Macau S.A.R.", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Man (Isle of)", "Marshall Islands", "Martinique", "Mauritania", "Mauritius", "Mayotte", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro", "Montserrat", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "New Caledonia", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Niue", "Norfolk Island", "North Korea", "North Macedonia", "Northern Mariana Islands", "Norway", "Oman", "Pakistan", "Palau", "Palestine", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Pitcairn Island", "Poland", "Portugal", "Puerto Rico", "Qatar", "Reunion", "Romania", "Russia", "Rwanda", "Saint Helena", "Saint Kitts and Nevis", "Saint Lucia", "Saint Pierre and Miquelon", "Saint Vincent and the Grenadines", "Saint-Barthelemy", "Saint-Martin (French part)", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Sint Maarten (Dutch part)", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Georgia", "South Korea", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Svalbard and Jan Mayen Islands", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "The Bahamas", "The Gambia", "Timor-Leste", "Togo", "Tokelau", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Turks and Caicos Islands", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "United States Minor Outlying Islands", "Uruguay", "Uzbekistan", "Vanuatu", "Vatican City State (Holy See)", "Venezuela", "Vietnam", "Virgin Islands (British)", "Virgin Islands (US)", "Wallis and Futuna Islands", "Western Sahara", "Yemen", "Zambia", "Zimbabwe"];
 var COUNTRY_ALIASES = {
   "united kingdom": ["uk"],
@@ -2329,7 +2316,7 @@ function resetAll(keepChip){
   document.getElementById("fBio").value="";
   document.getElementById("fTag").value="";
   var fh=document.getElementById("fHash"); if(fh) fh.value="";
-  ["fStatus","fNiche","fNiche2","fLocation","fLastPost","fScreen"].forEach(function(id){ document.getElementById(id).value=""; });
+  ["fStatus","fNiche","fLocation","fLastPost","fScreen"].forEach(function(id){ document.getElementById(id).value=""; });
   syncLocCombo();
   document.getElementById("fEmailToggle").checked=false;
   document.getElementById("fHideSaved").checked=false;
@@ -2369,7 +2356,6 @@ function applySmartSearch(){
   resetAll(true);
   parseSmartQuery(raw);
   recordSearch("AI search", raw);
-  document.getElementById("fNiche2").value=document.getElementById("fNiche").value;
   document.getElementById("qBasic").value=document.getElementById("q").value;
   document.getElementById("fCreator").value=document.getElementById("q").value;
   render();
@@ -2412,8 +2398,7 @@ document.getElementById("fBio").addEventListener("input", function(){ render(); 
 });
 var fHashEl=document.getElementById("fHash"); if(fHashEl) fHashEl.addEventListener("input", function(){ render(); });
 document.getElementById("fNiche").addEventListener("input", function(){ render(); });
-document.getElementById("fNiche").addEventListener("change", function(){ document.getElementById("fNiche2").value=this.value; render(); });
-document.getElementById("fNiche2").addEventListener("change", function(){ document.getElementById("fNiche").value=this.value; render(); });
+document.getElementById("fNiche").addEventListener("change", function(){ render(); });
 ["fFolFrom","fFolTo","fViewsFrom","fViewsTo","fLikesFrom","fLikesTo","fERFrom","fERTo"].forEach(function(id){ document.getElementById(id).addEventListener("input", function(){ render(); }); });
 document.getElementById("fEmailToggle").addEventListener("change", function(){ render(); });
 document.getElementById("fHideSaved").addEventListener("change", function(){ render(); });
@@ -2461,7 +2446,7 @@ function undoSmartChip(key){
   if(key==="fol"){ smartMin=null; smartMax=null; }
   else if(key==="er"){ smartERmin=null; document.getElementById("fERFrom").value=""; document.getElementById("fERTo").value=""; }
   else if(key==="platform"){ setPlatform(""); }
-  else if(key==="niche"){ document.getElementById("fNiche").value=""; document.getElementById("fNiche2").value=""; }
+  else if(key==="niche"){ document.getElementById("fNiche").value=""; }
   else if(key==="loc"){ smartLoc=""; smartUK=false; document.getElementById("fLocation").value=""; syncLocCombo(); }
   else if(key==="muslim"){ smartMuslim=false; }
   else if(key==="nomusic"){ smartNoMusic=false; }
@@ -2679,7 +2664,6 @@ function captureFilters(){
     status: document.getElementById("fStatus").value,
     niche: document.getElementById("fNiche").value,
     hash: (document.getElementById("fHash")||{value:""}).value,
-    niche2: document.getElementById("fNiche2").value,
     erFrom: document.getElementById("fERFrom").value,
     erTo: document.getElementById("fERTo").value,
     location: document.getElementById("fLocation").value,
@@ -2706,7 +2690,6 @@ function filterSummary(snap){
   if(snap.q) parts.push("\u201C"+snap.q+"\u201D");
   if(snap.platform) parts.push(snap.platform);
   if(snap.niche) parts.push("Topic: "+snap.niche);
-  else if(snap.niche2) parts.push("Category: "+snap.niche2);
   if(snap.hash) parts.push("Hashtag: "+snap.hash);
   if(snap.location) parts.push(snap.location);
   if(snap.status) parts.push("Status: "+snap.status);
@@ -2733,7 +2716,6 @@ function applySnapshot(snap){
   document.getElementById("fStatus").value=snap.status||"";
   document.getElementById("fNiche").value=snap.niche||"";
   var fh2=document.getElementById("fHash"); if(fh2) fh2.value=snap.hash||"";
-  document.getElementById("fNiche2").value=snap.niche2||snap.niche||"";
   document.getElementById("fERFrom").value=snap.erFrom||"";
   document.getElementById("fERTo").value=snap.erTo||"";
   if(!snap.erFrom && !snap.erTo && snap.er){ var gm=String(snap.er).match(/^ge(\d+)$/); if(gm) document.getElementById("fERFrom").value=gm[1]; else if(snap.er==="lt3") document.getElementById("fERTo").value="3"; }
