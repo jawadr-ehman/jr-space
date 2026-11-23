@@ -178,10 +178,6 @@
   .res-toolbar label{font-size:13px;font-weight:600;color:var(--muted)}
   .res-toolbar select{font-size:14px;padding:7px 9px;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--ink)}
   .results-note{color:var(--muted);font-size:13px;margin:0 0 10px}
-  .chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
-  .chip{border:1px solid var(--line);background:var(--chip);color:var(--ink);border-radius:999px;padding:5px 12px;font-size:13px;font-weight:600}
-  .chip:hover{border-color:var(--accent)}
-  .chip.active{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
   .thead{display:grid;grid-template-columns:minmax(0,1fr) 108px 84px 92px 196px;gap:10px;align-items:center;padding:4px 14px 9px}
   .thead .th{font-size:13px;font-weight:700;color:var(--muted)}
   .thead .th.num{text-align:right}
@@ -899,16 +895,6 @@
           </select>
         </div>
         <p class="results-note" id="resultsNote"></p>
-        <div class="chips" id="quickChips">
-          <button class="chip active" data-quick="all" type="button">All</button>
-          <button class="chip" data-quick="pending" type="button">Pending check</button>
-          <button class="chip" data-quick="verified_fail" type="button">Verified fail</button>
-          <button class="chip" data-quick="unverified" type="button">Unverified</button>
-          
-          <button class="chip" data-quick="email" type="button">Email available</button>
-          <button class="chip" data-quick="fitness" type="button">Fitness</button>
-          <button class="chip" data-quick="lifestyle" type="button">Lifestyle</button>
-        </div>
         <div class="thead" aria-hidden="true">
           <div class="th" id="thCreator">Creator</div>
           <div class="th num"><button class="sortbtn" type="button" id="sortFolBtn">Followers <span class="arr" id="sortFolArr">▼</span></button></div>
@@ -2018,7 +2004,6 @@ function showView(which){
   if(which==="settings") renderSettingsForm();
 }
 /* ---------- Quick chips / actions ---------- */
-function setChip(name){ document.querySelectorAll("#quickChips .chip").forEach(function(ch){ ch.classList.toggle("active", ch.getAttribute("data-quick")===name); }); }
 function resetAll(keepChip){
   document.getElementById("q").value="";
   document.getElementById("qBasic").value="";
@@ -2043,24 +2028,10 @@ function resetAll(keepChip){
   document.getElementById("fSort").value="followers-desc";
   setPlatform("");
   clearSmart();
-  if(!keepChip) setChip("all");
 }
-document.querySelectorAll("#quickChips .chip").forEach(function(ch){
-  ch.addEventListener("click", function(){
-    var k=ch.getAttribute("data-quick");
-    resetAll(true); setChip(k);
-    if(k==="pending") document.getElementById("fStatus").value="pending";
-    else if(k==="verified_fail") document.getElementById("fStatus").value="verified_fail";
-    else if(k==="unverified") document.getElementById("fStatus").value="unverified";
-    else if(k==="email") document.getElementById("fEmailToggle").checked=true;
-    else if(k==="fitness"){ document.getElementById("fNiche").value="fitness"; document.getElementById("fNiche2").value="fitness"; }
-    else if(k==="lifestyle"){ document.getElementById("fNiche").value="lifestyle"; document.getElementById("fNiche2").value="lifestyle"; }
-    render();
-  });
-});
 document.querySelectorAll("[data-ptab]").forEach(function(b){
   b.addEventListener("click", function(){
-    setPlatform(b.getAttribute("data-ptab")); setChip(""); render();
+    setPlatform(b.getAttribute("data-ptab")); render();
   });
 });
 document.getElementById("resetBtn").addEventListener("click", function(){ resetAll(false); render(); });
@@ -2077,7 +2048,7 @@ document.getElementById("modeTabAI").addEventListener("click", function(){ switc
 document.getElementById("modeTabSearch").addEventListener("click", function(){ switchMode("search"); });
 function applySmartSearch(){
   var raw=document.getElementById("q").value;
-  resetAll(true); setChip("");
+  resetAll(true);
   parseSmartQuery(raw);
   recordSearch("AI search", raw);
   document.getElementById("fNiche2").value=document.getElementById("fNiche").value;
@@ -2123,8 +2094,8 @@ document.getElementById("fBio").addEventListener("input", function(){ render(); 
 });
 var fHashEl=document.getElementById("fHash"); if(fHashEl) fHashEl.addEventListener("input", function(){ render(); });
 document.getElementById("fNiche").addEventListener("input", function(){ render(); });
-document.getElementById("fNiche").addEventListener("change", function(){ document.getElementById("fNiche2").value=this.value; setChip(""); render(); });
-document.getElementById("fNiche2").addEventListener("change", function(){ document.getElementById("fNiche").value=this.value; setChip(""); render(); });
+document.getElementById("fNiche").addEventListener("change", function(){ document.getElementById("fNiche2").value=this.value; render(); });
+document.getElementById("fNiche2").addEventListener("change", function(){ document.getElementById("fNiche").value=this.value; render(); });
 ["fFolFrom","fFolTo","fViewsFrom","fViewsTo","fLikesFrom","fLikesTo","fERFrom","fERTo"].forEach(function(id){ document.getElementById(id).addEventListener("input", function(){ render(); }); });
 document.getElementById("fEmailToggle").addEventListener("change", function(){ render(); });
 document.getElementById("fHideSaved").addEventListener("change", function(){ render(); });
