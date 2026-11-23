@@ -602,12 +602,14 @@
   .land-login{background:none;border:0;font-weight:700;text-decoration:underline;cursor:pointer;font-size:15px;color:#111}
   .land-demo{border:1.5px solid #111;background:transparent;border-radius:999px;padding:10px 20px;font-weight:700;cursor:pointer;font-size:15px;color:#111}
   .land-try{background:#111;color:#fff;border:0;border-radius:999px;padding:10px 22px;font-weight:700;cursor:pointer;font-size:15px}
-  .land-hero{background:#f9a8d4;padding:56px 40px 72px}
-  .land-hero h1{font-family:"Sora",sans-serif;font-size:clamp(44px,7.2vw,96px);line-height:.98;font-weight:800;letter-spacing:-.01em;margin:0 0 28px;text-transform:uppercase;color:#111}
-  .land-sub{font-size:19px;line-height:1.55;max-width:640px;margin:0 0 30px;color:#1f2937}
+  .land-hero{background:linear-gradient(135deg,#071426 0%,#0a2a5e 55%,#1d4ed8 100%);padding:56px 40px 72px}
+  .land-hero h1{font-family:"Sora",sans-serif;font-size:clamp(40px,6vw,76px);line-height:1.04;font-weight:800;letter-spacing:-.01em;margin:0 0 28px;color:#fff}
+  .land-sub{font-size:19px;line-height:1.55;max-width:640px;margin:0 0 30px;color:#c7d6f2}
   .land-ctas{display:flex;gap:14px;flex-wrap:wrap}
   .land-try.big,.land-demo.big{padding:14px 28px;font-size:16px}
-  .land-micro{margin:18px 0 0;color:#4b5563;font-size:14px}
+  .land-hero .land-try{background:#fff;color:#071426}
+  .land-hero .land-demo{border-color:rgba(255,255,255,.7);color:#fff}
+  .land-micro{margin:18px 0 0;color:#94a3b8;font-size:14px}
   .land-plats{display:flex;flex-wrap:wrap;gap:10px;padding:26px 40px;border-bottom:1px solid var(--line)}
   .land-plat{border:1px solid var(--line);border-radius:999px;padding:8px 16px;font-weight:700;font-size:14px;background:#fff}
   .land-sec{padding:64px 40px}
@@ -648,14 +650,14 @@
     .land-foot-cols{grid-template-columns:1fr 1fr}
   }
 
-  .land-roof{display:grid;grid-template-columns:280px minmax(0,1fr);gap:32px;margin-top:28px;align-items:start}
-  .land-tabs{display:flex;flex-direction:column;gap:4px}
-  .land-tab{border:0;background:none;text-align:left;font-size:19px;font-weight:700;color:#9ca3af;padding:12px 4px;cursor:pointer;border-bottom:1px solid var(--line)}
-  .land-tab.active{color:#111}
-  .land-roof-pane{display:none}
-  .land-roof-pane.active{display:block}
-  .land-roof-pane h3{font-size:22px;margin:0 0 10px}
-  .land-roof-pane p{margin:0 0 18px;color:#4b5563;font-size:16px;line-height:1.55;max-width:520px}
+  .land-top{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:28px}
+  .land-top-card{display:flex;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;cursor:pointer;text-align:left;box-shadow:var(--shadow);font:inherit}
+  .land-top-card:hover{border-color:#c3d2e6}
+  .land-top-card img{width:64px;height:64px;border-radius:50%;object-fit:cover;flex:none}
+  .land-top-card .nm{display:block;font-weight:800;font-size:15.5px;color:#111}
+  .land-top-card .hd{display:block;font-size:13px;color:#5b6b82;font-weight:600}
+  .land-top-card .fl{display:block;font-size:13.5px;font-weight:800;color:#111;margin-top:3px}
+  .land-top-card .fl span{color:#5b6b82;font-weight:600}
   .land-mock{border:1px solid var(--line);border-radius:16px;background:#fff;box-shadow:0 12px 32px rgba(10,30,51,.08);padding:8px 18px;max-width:560px}
   .land-mock-row{display:flex;justify-content:space-between;gap:16px;padding:13px 0;border-bottom:1px solid #f1f5f9;font-size:15px}
   .land-mock-row:last-child{border-bottom:0}
@@ -682,9 +684,7 @@
   .land-arrow{background:#111;color:#fff;width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex:none}
   html.gate-out{scroll-behavior:smooth}
   @media (max-width:860px){
-    .land-roof{grid-template-columns:1fr;gap:18px}
-    .land-tabs{flex-direction:row;overflow-x:auto}
-    .land-tab{white-space:nowrap;border-bottom:0}
+    .land-top{grid-template-columns:repeat(2,minmax(0,1fr))}
     .land-trio,.land-res{grid-template-columns:1fr}
   }
 
@@ -748,8 +748,8 @@
     </div>
   </header>
   <section class="land-hero">
-    <h1>Find creators.<br>Grow your brand.</h1>
-    <p class="land-sub">Space is the free creator finder &mdash; search creators across 8 platforms, filter by followers, views and engagement, and run your outreach from one place. No paywall, no monthly cap.</p>
+    <h1>Find creators worth<br>working with.</h1>
+    <p class="land-sub">JR Space is the free creator finder. Search across 8 platforms, filter by followers, views and engagement, and run your outreach from one place &mdash; no paywall, no monthly cap.</p>
     <div class="land-ctas">
       <button class="land-try big" id="landTry2" type="button">Try for free</button>
       <button class="land-demo big" id="landDemo2" type="button">Request a demo</button>
@@ -769,56 +769,23 @@
       <div class="land-card"><h3>Creator profiles</h3><p>Name, handle, link, email, followers, views and engagement on every creator &mdash; nothing invented.</p></div>
     </div>
   </section>
-  <section class="land-sec" id="landRoof">
-    <h2>Space brings everything under one roof.</h2>
-    <div class="land-roof">
-      <div class="land-tabs" role="tablist" aria-label="What Space does">
-        <button class="land-tab active" type="button" data-roof="manage" role="tab">Manage</button>
-        <button class="land-tab" type="button" data-roof="discover" role="tab">Discover</button>
-        <button class="land-tab" type="button" data-roof="email" role="tab">Email</button>
-        <button class="land-tab" type="button" data-roof="track" role="tab">Track</button>
-      </div>
-      <div class="land-roof-body">
-        <div class="land-roof-pane active" id="roof-manage">
-          <h3>Manage</h3>
-          <p>Keep every creator organised from start to finish with lists, notes, statuses and history in one CRM.</p>
-          <div class="land-mock">
-            <div class="land-mock-row"><span class="land-mock-name">Summer Launch</span><span class="land-mock-meta">12 creators</span></div>
-            <div class="land-mock-row"><span class="land-mock-name">Fitness UK</span><span class="land-mock-meta">8 creators</span></div>
-            <div class="land-mock-row"><span class="land-mock-name">Beauty US</span><span class="land-mock-meta">20 creators</span></div>
-          </div>
-        </div>
-        <div class="land-roof-pane" id="roof-discover">
-          <h3>Discover</h3>
-          <p>Find creators by topic, platform or numbers &mdash; across 8 platforms, with nothing invented.</p>
-          <div class="land-mock">
-            <div class="land-mock-row"><span class="land-mock-name">Cristiano Ronaldo</span><span class="land-mock-meta">Instagram &middot; 679.8M</span></div>
-            <div class="land-mock-row"><span class="land-mock-name">MrBeast</span><span class="land-mock-meta">YouTube &middot; 525M</span></div>
-            <div class="land-mock-row"><span class="land-mock-name">Lionel Messi</span><span class="land-mock-meta">Instagram &middot; 517.6M</span></div>
-          </div>
-        </div>
-        <div class="land-roof-pane" id="roof-email">
-          <h3>Email</h3>
-          <p>Draft outreach with the creator&rsquo;s own public email &mdash; personal, fast, and from one place.</p>
-          <div class="land-mock">
-            <div class="land-mock-mail">Hi {name},<br><br>I loved your recent video &mdash; I&rsquo;d like to talk about working together on a paid partnership. Are you open to a quick chat this week?</div>
-          </div>
-        </div>
-        <div class="land-roof-pane" id="roof-track">
-          <h3>Track</h3>
-          <p>Watch the creators you care about and keep their numbers in view, all in one place.</p>
-          <div class="land-mock">
-            <div class="land-mock-row"><span class="land-mock-name">Cristiano Ronaldo</span><span class="land-mock-meta">Tracked &middot; 679.8M</span></div>
-            <div class="land-mock-row"><span class="land-mock-name">MrBeast</span><span class="land-mock-meta">Tracked &middot; 525M</span></div>
-            <div class="land-mock-row"><span class="land-mock-name">Lionel Messi</span><span class="land-mock-meta">Tracked &middot; 517.6M</span></div>
-          </div>
-        </div>
-      </div>
+  <section class="land-sec" id="landTop">
+    <h2>Meet the creators on JR Space.</h2>
+    <p class="land-lead">From the world&rsquo;s biggest stars to rising names &mdash; real profiles, real numbers, free to explore. Tap any creator to start.</p>
+    <div class="land-top">
+      <button class="land-top-card" type="button"><img src="assets/avatars/instagram-cristiano.jpg" alt="Cristiano Ronaldo"><span><span class="nm">Cristiano Ronaldo</span><span class="hd">@cristiano &middot; Instagram</span><span class="fl">679.8M <span>followers</span></span></span></button>
+      <button class="land-top-card" type="button"><img src="assets/avatars/youtube-mrbeast.jpg" alt="MrBeast"><span><span class="nm">MrBeast</span><span class="hd">@mrbeast &middot; YouTube</span><span class="fl">525M <span>followers</span></span></span></button>
+      <button class="land-top-card" type="button"><img src="assets/avatars/instagram-leomessi.jpg" alt="Lionel Messi"><span><span class="nm">Lionel Messi</span><span class="hd">@leomessi &middot; Instagram</span><span class="fl">517.6M <span>followers</span></span></span></button>
+      <button class="land-top-card" type="button"><img src="assets/avatars/instagram-selenagomez.jpg" alt="Selena Gomez"><span><span class="nm">Selena Gomez</span><span class="hd">@selenagomez &middot; Instagram</span><span class="fl">402.3M <span>followers</span></span></span></button>
+      <button class="land-top-card" type="button"><img src="assets/avatars/instagram-kyliejenner.jpg" alt="Kylie Jenner"><span><span class="nm">Kylie Jenner</span><span class="hd">@kyliejenner &middot; Instagram</span><span class="fl">381M <span>followers</span></span></span></button>
+      <button class="land-top-card" type="button"><img src="assets/avatars/instagram-therock.jpg" alt="Dwayne Johnson"><span><span class="nm">Dwayne Johnson</span><span class="hd">@therock &middot; Instagram</span><span class="fl">380.2M <span>followers</span></span></span></button>
+      <button class="land-top-card" type="button"><img src="assets/avatars/instagram-arianagrande.jpg" alt="Ariana Grande"><span><span class="nm">Ariana Grande</span><span class="hd">@arianagrande &middot; Instagram</span><span class="fl">362.8M <span>followers</span></span></span></button>
+      <button class="land-top-card" type="button"><img src="assets/avatars/instagram-kimkardashian.jpg" alt="Kim Kardashian"><span><span class="nm">Kim Kardashian</span><span class="hd">@kimkardashian &middot; Instagram</span><span class="fl">343.7M <span>followers</span></span></span></button>
     </div>
   </section>
   <section class="land-sec alt" id="landThree">
     <h2>Discover, manage and reach out &mdash; from the same platform</h2>
-    <p class="land-lead">Everything under one roof, so you can concentrate on growing your program.</p>
+    <p class="land-lead">Everything in one place, so you can focus on growing your program.</p>
     <div class="land-trio">
       <div class="land-trio-card"><div class="land-pixels pix-pink"></div><h3>Discover</h3><p>Search creators by topic, platform and numbers &mdash; free, unlimited, nothing invented.</p><button class="land-explore" type="button" data-goto="landPlatform">Explore</button></div>
       <div class="land-trio-card"><div class="land-pixels pix-lav"></div><h3>Campaigns</h3><p>Run partnerships from one place &mdash; lists, statuses, notes and outreach together.</p><button class="land-explore" type="button" data-goto="landHow">Explore</button></div>
@@ -890,7 +857,7 @@
   </section>
   <section class="land-cta">
     <div class="land-pixels pix-bw" aria-hidden="true"></div>
-    <h2>Bring everything under one roof</h2>
+    <h2>Start finding creators &mdash; free forever.</h2>
     <p>Find creators, manage partnerships and run your outreach from one free platform.</p>
     <div class="land-ctas"><button class="land-try-w big" id="landCtaTry" type="button">Try for free</button><button class="land-login-w big" id="landCtaLogin" type="button">Log in</button></div>
   </section>
@@ -1616,7 +1583,7 @@ function initials(c){ var n=(c.name||c.handle.replace("@","")).trim(); var parts
 function displayName(c){ return c.name && c.name.trim() ? c.name : c.handle; }
 function avatarClass(c){ if(c.platform==="Instagram") return "av-ig"; if(c.platform==="YouTube") return "av-yt"; if(c.platform==="X") return "av-x"; if(c.platform==="Twitch") return "av-tw"; if(c.platform==="LinkedIn") return "av-li"; if(c.platform==="Threads") return "av-th"; if(c.platform==="Facebook") return "av-fb"; return "av-tt"; }
 var LOCAL_AVATARS = {"instagram|@cristiano":"assets/avatars/cristiano.jpg","instagram|@selenagomez":"assets/avatars/selenagomez.jpg","x|@elonmusk":"assets/avatars/elonmusk.jpg","youtube|@tseries":"assets/avatars/tseries.jpg","youtube|@setindia":"assets/avatars/setindia.jpg","youtube|@mrbeast":"assets/avatars/mrbeast.jpg","instagram|@kourtneykardash":"assets/avatars/kourtneykardash.jpg","instagram|@leomessi":"assets/avatars/leomessi.jpg","instagram|@therock":"assets/avatars/therock.jpg","instagram|@arianagrande":"assets/avatars/arianagrande.jpg","instagram|@kyliejenner":"assets/avatars/kyliejenner.jpg","instagram|@kimkardashian":"assets/avatars/kimkardashian.jpg","instagram|@beyonce":"assets/avatars/beyonce.jpg","instagram|@khloekardashian":"assets/avatars/khloekardashian.jpg","instagram|@kendalljenner":"assets/avatars/kendalljenner.jpg","instagram|@taylorswift":"assets/avatars/taylorswift.jpg","instagram|@jlo":"assets/avatars/jlo.jpg","instagram|@lilbieber":"assets/avatars/lilbieber.jpg","instagram|@virat.kohli":"assets/avatars/virat.kohli.jpg"};
-function avatarURL(c){ if(!c) return ""; var k=((c.platform||"")+"|"+(c.handle||"")).toLowerCase(); if(LOCAL_AVATARS[k]) return LOCAL_AVATARS[k]; var u=String(c.avatar||"").trim(); return (/^https?:\/\//i.test(u)||/^assets\//i.test(u))? u : ""; }
+function avatarURL(c){ if(!c) return ""; var k=((c.platform||"")+"|"+(c.handle||"")).toLowerCase(); if(LOCAL_AVATARS[k]) return LOCAL_AVATARS[k]; var u=String(c.avatar||"").trim(); if(/^assets\//i.test(u)) return u; if(/^https?:\/\/(yt3\.googleusercontent\.com|yt3\.ggpht\.com|pbs\.twimg\.com|static-cdn\.jtvnw\.net)\//i.test(u)) return u; return ""; }
 function liveAvatarURL(c){ if(!c) return ""; var h=String(c.handle||"").trim().replace(/^@/,""); if(!/^[A-Za-z0-9._-]+$/.test(h)) return ""; var prov={Instagram:"instagram",TikTok:"tiktok",YouTube:"youtube",X:"twitter",Twitch:"twitch",Threads:"threads",Facebook:"facebook"}[c.platform]; if(!prov) return ""; var id=(c.platform==="YouTube" && String(c.handle||"").charAt(0)==="@") ? c.handle : h; return "https://unavatar.io/"+prov+"/"+id+"?fallback=false"; }
 function avatarErr(img){ var l=img.getAttribute("data-live"); if(l){ img.removeAttribute("data-live"); img.src=l; } else { img.remove(); } }
 function avatarHTML(c, extraCls){ var u=avatarURL(c); var live=liveAvatarURL(c); var cls="avatar "+avatarClass(c)+(extraCls?" "+extraCls:""); var src=u||live; if(!src) return '<span class="'+cls+'" aria-hidden="true">'+esc(initials(c))+'</span>'; var dl=(u && live && live!==u)? ' data-live="'+esc(live)+'"' : ''; return '<span class="'+cls+'" aria-hidden="true">'+esc(initials(c))+'<img class="avatar-img" src="'+esc(src)+'"'+dl+' alt="" loading="lazy" referrerpolicy="no-referrer" onerror="avatarErr(this)" /></span>'; }
@@ -3192,14 +3159,8 @@ document.getElementById("authClose").addEventListener("click", closeAuth);
     var b=document.getElementById(id);
     if(b) b.addEventListener("click", function(){ openAuth("signup"); });
   });
-  document.querySelectorAll(".land-tab").forEach(function(tab){
-    tab.addEventListener("click", function(){
-      document.querySelectorAll(".land-tab").forEach(function(t){ t.classList.remove("active"); });
-      tab.classList.add("active");
-      document.querySelectorAll(".land-roof-pane").forEach(function(pn){ pn.classList.remove("active"); });
-      var pane=document.getElementById("roof-"+tab.getAttribute("data-roof"));
-      if(pane) pane.classList.add("active");
-    });
+  document.querySelectorAll(".land-top-card").forEach(function(b){
+    b.addEventListener("click", function(){ openAuth("signup"); });
   });
   document.querySelectorAll(".land-explore, .land-res-card[data-goto]").forEach(function(b){
     b.addEventListener("click", function(){
