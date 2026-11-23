@@ -522,17 +522,20 @@
   .gate-stat b{font-family:"Sora",sans-serif;font-size:22px;font-weight:800}
   .gate-stat span{font-size:12.5px;opacity:.85;font-weight:600}
   .gate-plats{display:flex;gap:14px;flex-wrap:wrap;margin-top:auto;padding-top:8px}
-  .gate-plat{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:10.5px;font-weight:700;color:#fff;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);border-radius:14px;padding:10px 8px 8px;min-width:66px}
-  .gate-plat svg{width:44px;height:44px;display:block;filter:drop-shadow(0 6px 14px rgba(20,10,60,.35));animation:gateFloat 3s ease-in-out infinite alternate;will-change:transform}
+  .gate-plat{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:10.5px;font-weight:700;color:#fff;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);border-radius:14px;padding:10px 8px 8px;min-width:66px;animation:gateIn .55s ease both,gateBob 2.6s ease-in-out .6s infinite alternate;will-change:transform}
+  .gate-plat svg{width:44px;height:44px;display:block;filter:drop-shadow(0 6px 14px rgba(20,10,60,.35))}
   @keyframes gateFloat{from{transform:translateY(0) rotate(-2deg)}to{transform:translateY(-6px) rotate(2deg)}}
-  .gate-plat:nth-child(1) svg{animation-delay:0s}
-  .gate-plat:nth-child(2) svg{animation-delay:.35s}
-  .gate-plat:nth-child(3) svg{animation-delay:.7s}
-  .gate-plat:nth-child(4) svg{animation-delay:1.05s}
-  .gate-plat:nth-child(5) svg{animation-delay:1.4s}
-  .gate-plat:nth-child(6) svg{animation-delay:1.75s}
-  .gate-plat:nth-child(7) svg{animation-delay:2.1s}
-  @media (prefers-reduced-motion: reduce){ .gate-plat svg, .ptab .pt-ico svg{animation:none} }
+  @keyframes gateIn{from{opacity:0;transform:translateY(16px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+  @keyframes gateBob{from{transform:translateY(0)}to{transform:translateY(-8px)}}
+  .gate-plat:nth-child(1){animation-delay:0s,.6s}
+  .gate-plat:nth-child(2){animation-delay:.08s,.68s}
+  .gate-plat:nth-child(3){animation-delay:.16s,.76s}
+  .gate-plat:nth-child(4){animation-delay:.24s,.84s}
+  .gate-plat:nth-child(5){animation-delay:.32s,.92s}
+  .gate-plat:nth-child(6){animation-delay:.4s,1s}
+  .gate-plat:nth-child(7){animation-delay:.48s,1.08s}
+  .gate-plat:nth-child(8){animation-delay:.56s,1.16s}
+  @media (prefers-reduced-motion: reduce){ .gate-plat, .gate-plat svg, .ptab .pt-ico svg{animation:none} }
   /* Platform icons inside Discover filter tabs (logged-in view) — same float as the login panel */
   .ptab{display:inline-flex;align-items:center;gap:6px}
   .pt-ico{display:inline-flex;flex:none;line-height:0}
@@ -569,18 +572,13 @@
   .aihelp-sheet{max-width:440px}
   .aihelp-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
   .aihelp-head h3{font-size:21px}
-  .aihelp-head .sub{color:var(--muted);font-size:14px;margin-top:2px}
-  .aihelp-msgs{display:flex;flex-direction:column;gap:8px;margin:16px 0;max-height:320px;overflow:auto;padding-right:4px}
+  .aihelp-msgs{display:flex;flex-direction:column;gap:8px;margin:16px 0;max-height:420px;overflow:auto;padding-right:4px}
   .aihelp-msg{max-width:88%;padding:9px 12px;border-radius:12px;font-size:14px;line-height:1.5;white-space:pre-line}
   .aihelp-msg.bot{background:var(--surface2);border:1px solid var(--line);align-self:flex-start}
   .aihelp-msg.user{background:var(--accent);color:#fff;align-self:flex-end}
-  .aihelp-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
-  .aihelp-chips button{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:999px;padding:5px 11px;font-size:12.5px;font-weight:700;cursor:pointer}
-  .aihelp-chips button:hover{border-color:var(--accent);color:var(--accent-dark)}
   .aihelp-form{display:flex;gap:8px}
   .aihelp-form input{flex:1;min-width:0;font-size:14.5px;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:#fff;color:var(--ink);outline:0}
   .aihelp-form input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
-  .aihelp-note{font-size:12px;color:var(--muted);margin:10px 0 0;line-height:1.45}
 
 </style>
 </head>
@@ -1144,23 +1142,14 @@
     <div class="aihelp-head">
       <div>
         <h3>AI Help</h3>
-        <div class="sub">Ask about JR Space — search, filters, lists, campaigns, login.</div>
       </div>
       <button class="btn2" type="button" id="aiHelpClose">Close</button>
     </div>
     <div class="aihelp-msgs" id="aiHelpMsgs"></div>
-    <div class="aihelp-chips" id="aiHelpChips">
-      <button type="button" data-q="How do I search creators?">How to search</button>
-      <button type="button" data-q="How do filters work?">Filters</button>
-      <button type="button" data-q="How do I save a creator to a list?">Save to a list</button>
-      <button type="button" data-q="How do campaigns work?">Campaigns</button>
-      <button type="button" data-q="I can't log in">Login help</button>
-    </div>
     <form class="aihelp-form" id="aiHelpForm">
       <input id="aiHelpInput" type="text" placeholder="Type your question…" autocomplete="off" />
       <button class="btn2 solid" type="submit">Send</button>
     </form>
-    <p class="aihelp-note">Built-in helper — answers come from JR Space's own help guide. Nothing is sent anywhere, and no account or password is ever asked for here.</p>
   </div>
 </div>
 
@@ -2356,14 +2345,14 @@ var AIHELP_FAQ=[
  {k:["email","outreach","contact"],a:"If a creator has a public email, it shows on their profile and in the table. Use it for outreach, or draft a message from the creator's profile — JR Space only uses emails the creator published themselves."},
  {k:["platform","instagram","tiktok","youtube","facebook","threads","twitch","linkedin"],a:"JR Space covers 8 platforms: Instagram, TikTok, YouTube, X, Twitch, LinkedIn, Threads and Facebook. Pick one in the platform tabs on the left of Discover, or 'All' for every platform."}
 ];
-function aiHelpAnswer(q){ var t=(" "+q.toLowerCase()+" "); for(var i=0;i<AIHELP_FAQ.length;i++){ var f=AIHELP_FAQ[i]; for(var j=0;j<f.k.length;j++){ if(t.indexOf(f.k[j])!==-1) return f.a; } } return "I can help with searching, filters, lists, campaigns, login, tracking and exports. Try one of the quick questions below, or rephrase — for example 'How do I save a creator to a list?'"; }
+function aiHelpAnswer(q){ var t=(" "+q.toLowerCase()+" "); for(var i=0;i<AIHELP_FAQ.length;i++){ var f=AIHELP_FAQ[i]; for(var j=0;j<f.k.length;j++){ if(t.indexOf(f.k[j])!==-1) return f.a; } } return "I can help with searching, filters, lists, campaigns, login, tracking and exports. Try rephrasing — for example 'How do I save a creator to a list?'"; }
 function aiHelpAdd(role,text){ var m=document.getElementById("aiHelpMsgs"); if(!m) return; var d=document.createElement("div"); d.className="aihelp-msg "+role; d.textContent=text; m.appendChild(d); m.scrollTop=m.scrollHeight; }
 function aiHelpAsk(q){ if(!q) return; aiHelpAdd("user",q); setTimeout(function(){ aiHelpAdd("bot",aiHelpAnswer(q)); },250); }
-document.getElementById("navAiHelp").addEventListener("click",function(){ document.getElementById("aiHelpOverlay").classList.add("show"); var m=document.getElementById("aiHelpMsgs"); if(m && !m.children.length){ aiHelpAdd("bot","Hi! I'm JR Space's built-in helper. Ask me how to search, filter, save creators, run a campaign, or fix a login — or tap a quick question below."); } });
+document.getElementById("navAiHelp").addEventListener("click",function(){ document.getElementById("aiHelpOverlay").classList.add("show"); var m=document.getElementById("aiHelpMsgs"); if(m && !m.children.length){ aiHelpAdd("bot","Hi! I'm JR Space's built-in helper. Ask me how to search, filter, save creators, run a campaign, or fix a login."); } });
 document.getElementById("aiHelpClose").addEventListener("click",function(){ document.getElementById("aiHelpOverlay").classList.remove("show"); });
 document.getElementById("aiHelpOverlay").addEventListener("click",function(e){ if(e.target===this) this.classList.remove("show"); });
 document.getElementById("aiHelpForm").addEventListener("submit",function(e){ e.preventDefault(); var inp=document.getElementById("aiHelpInput"); var q=inp.value.trim(); inp.value=""; aiHelpAsk(q); });
-document.getElementById("aiHelpChips").addEventListener("click",function(e){ var b=e.target.closest("button[data-q]"); if(b) aiHelpAsk(b.getAttribute("data-q")); });
+
 
 
 /* ============================================================
