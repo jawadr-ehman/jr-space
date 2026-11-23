@@ -44,15 +44,19 @@
   input,select{font:inherit}
 
   /* ===== Left icon sidebar ===== */
-  .sidebar{position:fixed;left:0;top:0;bottom:0;width:78px;background:var(--surface);border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:center;padding:14px 0 16px;z-index:60}
+  .sidebar{position:fixed;left:0;top:0;bottom:0;width:78px;background:linear-gradient(180deg,#ffffff,#f7fafc);border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:center;padding:14px 0 16px;z-index:60}
   .side-logo{display:flex;align-items:center;background:none;border:0;padding:2px;margin-bottom:20px;width:100%}
   .side-logo .lockup{width:100%;height:auto;display:block}
   .side-nav{display:flex;flex-direction:column;gap:8px;width:100%;align-items:center}
   .side-btn{position:relative;width:62px;border:0;background:transparent;color:var(--muted);border-radius:12px;padding:9px 2px 7px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10.5px;font-weight:700;line-height:1.15}
   .side-btn:hover{background:var(--surface2);color:var(--ink)}
+  .side-btn svg{transition:transform .15s}
+  .side-btn:hover svg{transform:scale(1.1)}
+  .side-btn.aihelp-btn{background:linear-gradient(135deg,var(--accent),#6d28d9);color:#fff;box-shadow:0 6px 16px rgba(37,99,235,.35)}
+  .side-btn.aihelp-btn:hover{background:linear-gradient(135deg,var(--accent-dark),#5b21b6);color:#fff}
   .side-btn.active{background:var(--accent-soft);color:var(--accent-dark)}
   .side-btn .cnt{position:absolute;top:4px;right:6px;background:var(--accent);color:#fff;font-size:10px;font-weight:800;border-radius:999px;min-width:17px;height:17px;display:flex;align-items:center;justify-content:center;padding:0 4px}
-  .side-foot{margin-top:auto;font-size:10px;color:var(--muted);text-align:center;padding:0 6px;line-height:1.3}
+  .side-foot{margin-top:auto;font-size:10px;font-weight:800;color:var(--accent-dark);background:var(--accent-soft);border-radius:999px;text-align:center;padding:6px 4px;line-height:1.3}
 
   /* ===== Main column ===== */
   .main{margin-left:78px;min-width:0;padding:0 0 34px}
@@ -113,10 +117,11 @@
   /* ===== Dashboard grid: filters + results ===== */
   .dash{display:grid;grid-template-columns:288px minmax(0,1fr);align-items:start}
   .leftcol{border-right:1px solid var(--line);padding:16px 16px 20px;position:sticky;top:0;max-height:100vh;overflow:auto}
-  .plat-tabs{display:flex;flex-wrap:wrap;gap:6px;background:var(--surface2);border:1px solid var(--line);border-radius:12px;padding:5px;margin-bottom:16px}
-  .ptab{border:0;background:transparent;color:var(--muted);border-radius:8px;padding:6px 10px;font-size:13px;font-weight:700}
+  .plat-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:var(--surface2);border:1px solid var(--line);border-radius:14px;padding:6px;margin-bottom:16px}
+  .ptab{border:0;background:transparent;color:var(--muted);border-radius:9px;padding:8px 4px;font-size:12.5px;font-weight:700;justify-content:center;text-align:center}
   .ptab .pc{font-weight:600;opacity:.75;font-size:12px}
-  .ptab.active{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(10,30,51,.14)}
+  .ptab:hover{background:rgba(255,255,255,.65);color:var(--ink)}
+  .ptab.active{background:#fff;color:var(--accent-dark);box-shadow:0 2px 6px rgba(10,30,51,.16)}
   .fsec{margin-bottom:18px}
   .fsec h4{font-size:14.5px;font-weight:800;margin-bottom:10px}
   .fsec-head{display:flex;width:100%;align-items:center;justify-content:space-between;gap:8px;border:0;background:transparent;padding:2px 0 10px;font-family:"Sora",sans-serif;font-size:14.5px;font-weight:800;color:var(--ink);cursor:pointer;text-align:left}
@@ -125,8 +130,8 @@
   .fsec-body[hidden]{display:none}
   .field{margin-bottom:11px}
   .field label{display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:4px}
-  .field select,.field input[type="text"],.field input[type="search"]{width:100%;font-size:14px;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--ink);outline:0}
-  .field select:focus,.field input:focus{border-color:var(--accent)}
+  .field select,.field input[type="text"],.field input[type="search"]{width:100%;font-size:14px;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:#fff;color:var(--ink);outline:0}
+  .field select:focus,.field input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
   .loc-combo{position:relative}
   .loc-combo input[type="text"]{padding-right:56px}
   .loc-chev{position:absolute;right:11px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;display:flex}
@@ -373,10 +378,12 @@
   .auth-sheet h3{font-size:20px;margin-bottom:2px}
 .auth-lockup{height:46px;width:auto;max-width:100%;display:block;margin-bottom:14px}
   .auth-sheet .sub{color:var(--muted);font-size:13.5px;margin-bottom:14px}
-  .social-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:10px;padding:11px;font-weight:700;font-size:14.5px;margin-top:8px}
+  .social-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:12px;padding:13px;font-weight:700;font-size:14.5px;margin-top:8px;transition:transform .15s,box-shadow .15s}
+  .social-btn:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(10,30,51,.12)}
   .social-btn:hover{border-color:var(--accent)}
   .social-form{border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:10px;background:var(--surface2)}
-  .auth-divider{display:flex;align-items:center;gap:10px;margin:16px 0 6px;color:var(--muted);font-size:12.5px;font-weight:700}
+  .auth-divider{display:flex;align-items:center;gap:10px;margin:18px 0 6px;color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.06em}
+  .auth-divider:before,.auth-divider:after{content:"";flex:1;height:1px;background:var(--line)}
   .auth-divider:before,.auth-divider:after{content:"";flex:1;height:1px;background:var(--line)}
   .auth-tabs{display:flex;gap:8px;margin-bottom:12px}
   .auth-tab{flex:1;border:1px solid var(--line);background:#fff;border-radius:9px;padding:8px;font-weight:700;color:var(--muted)}
@@ -389,7 +396,7 @@
   .auth-reset-link{display:block;margin:12px auto 0;background:none;border:0;color:var(--accent-dark);font-weight:700;font-size:13.5px;text-decoration:underline;padding:2px}
   .auth-reset-link[hidden]{display:none}
   .data-loading{padding:34px 18px;text-align:center;color:var(--muted);font-weight:600}
-  .auth-submit{width:100%;margin-top:14px;background:var(--accent);color:#fff;border:0;border-radius:10px;padding:12px;font-weight:700;font-size:15px}
+  .auth-submit{width:100%;margin-top:14px;background:linear-gradient(120deg,var(--accent),#6d28d9);color:#fff;border:0;border-radius:12px;padding:13px;font-weight:700;font-size:15px;box-shadow:0 10px 24px rgba(37,99,235,.30)}
   .auth-submit:hover{background:var(--accent-dark)}
   @media (max-width:860px){ .dash-cols{grid-template-columns:1fr} }
   @media (max-width:760px){
@@ -502,22 +509,22 @@
   #gateBrand{display:none}
   #gateHead{display:none}
   html.gate-out .sidebar, html.gate-out .main{display:none}
-  html.gate-out #gateBrand{display:block;position:fixed;left:0;top:0;bottom:0;width:44%;z-index:96;background:linear-gradient(155deg,#7c3aed 0%,#5b4be0 48%,#3730a3 100%);color:#fff;overflow-y:auto}
-  .gate-brand-in{padding:46px 48px 40px;display:flex;flex-direction:column;gap:26px;min-height:100%}
-  .gate-logo-card{background:#fff;border-radius:14px;padding:10px 16px;display:inline-block;align-self:flex-start;box-shadow:0 8px 24px rgba(20,10,60,.25)}
+  html.gate-out #gateBrand{display:block;position:fixed;left:0;top:0;bottom:0;width:44%;z-index:96;background:radial-gradient(640px 320px at 88% -8%,rgba(255,255,255,.16),transparent 60%),linear-gradient(160deg,#0f1734 0%,#232a6b 46%,#4c1d95 82%,#6d28d9 100%);color:#fff;overflow-y:auto}
+  .gate-brand-in{padding:54px 52px 42px;display:flex;flex-direction:column;gap:30px;min-height:100%}
+  .gate-logo-card{background:#fff;border-radius:16px;padding:12px 18px;display:inline-block;align-self:flex-start;box-shadow:0 14px 34px rgba(5,5,30,.38)}
   .gate-logo-card img{height:44px;width:auto;display:block}
-  .gate-h{font-family:"Sora",sans-serif;font-size:31px;line-height:1.28;font-weight:800;margin:0}
-  .gate-feats{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:13px;font-size:16.5px;font-weight:600}
+  .gate-h{font-family:"Sora",sans-serif;font-size:34px;line-height:1.22;font-weight:800;letter-spacing:-.01em;margin:0}
+  .gate-feats{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:15px;font-size:17px;font-weight:600}
   .gate-feats li{display:flex;gap:11px;align-items:baseline}
-  .gate-feats li:before{content:"";width:8px;height:8px;border-radius:50%;background:#c4b5fd;flex:none;transform:translateY(-1px)}
+  .gate-feats li:before{content:"";width:9px;height:9px;border-radius:50%;background:#c4b5fd;flex:none;transform:translateY(-1px);box-shadow:0 0 0 3px rgba(196,181,253,.28)}
   .gate-stats{display:flex;gap:26px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.28);padding-top:20px}
   .gate-stat{display:flex;flex-direction:column}
   .gate-stat b{font-family:"Sora",sans-serif;font-size:22px;font-weight:800}
   .gate-stat span{font-size:12.5px;opacity:.85;font-weight:600}
-  .gate-plats{display:flex;gap:12px;flex-wrap:wrap;margin-top:auto;padding-top:8px}
-  .gate-plat{display:flex;flex-direction:column;align-items:center;gap:5px;font-size:10.5px;font-weight:700;color:#fff}
-  .gate-plat svg{width:42px;height:42px;display:block;filter:drop-shadow(0 6px 14px rgba(20,10,60,.35));animation:gateFloat 2.2s ease-in-out infinite alternate;will-change:transform}
-  @keyframes gateFloat{from{transform:translateY(0) rotate(-3deg)}to{transform:translateY(-12px) rotate(3deg)}}
+  .gate-plats{display:flex;gap:14px;flex-wrap:wrap;margin-top:auto;padding-top:8px}
+  .gate-plat{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:10.5px;font-weight:700;color:#fff;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);border-radius:14px;padding:10px 8px 8px;min-width:66px}
+  .gate-plat svg{width:44px;height:44px;display:block;filter:drop-shadow(0 6px 14px rgba(20,10,60,.35));animation:gateFloat 3s ease-in-out infinite alternate;will-change:transform}
+  @keyframes gateFloat{from{transform:translateY(0) rotate(-2deg)}to{transform:translateY(-6px) rotate(2deg)}}
   .gate-plat:nth-child(1) svg{animation-delay:0s}
   .gate-plat:nth-child(2) svg{animation-delay:.35s}
   .gate-plat:nth-child(3) svg{animation-delay:.7s}
@@ -529,7 +536,7 @@
   /* Platform icons inside Discover filter tabs (logged-in view) — same float as the login panel */
   .ptab{display:inline-flex;align-items:center;gap:6px}
   .pt-ico{display:inline-flex;flex:none;line-height:0}
-  .pt-ico svg{width:16px;height:16px;display:block;animation:gateFloat 2.2s ease-in-out infinite alternate;will-change:transform}
+  .pt-ico svg{width:17px;height:17px;display:block;animation:gateFloat 3s ease-in-out infinite alternate;will-change:transform}
   .plat-tabs .ptab:nth-child(2) .pt-ico svg{animation-delay:0s}
   .plat-tabs .ptab:nth-child(3) .pt-ico svg{animation-delay:.35s}
   .plat-tabs .ptab:nth-child(4) .pt-ico svg{animation-delay:.7s}
@@ -537,11 +544,11 @@
   .plat-tabs .ptab:nth-child(6) .pt-ico svg{animation-delay:1.4s}
   .plat-tabs .ptab:nth-child(7) .pt-ico svg{animation-delay:1.75s}
   .plat-tabs .ptab:nth-child(8) .pt-ico svg{animation-delay:2.1s}
-  html.gate-out #authOverlay{display:flex;flex-direction:column;position:fixed;left:44%;right:0;top:0;bottom:0;background:#fff;align-items:center;justify-content:flex-start;overflow-y:auto;padding:52px 24px 40px;z-index:95}
-  html.gate-out #gateHead{display:block;font-family:"Sora",sans-serif;font-size:24px;font-weight:800;letter-spacing:.04em;color:var(--ink);margin:0 0 22px;text-align:center}
-  html.gate-out .auth-sheet{box-shadow:none;border:0;border-radius:0;max-height:none;overflow:visible;width:100%;max-width:430px;padding:0;background:#fff}
+  html.gate-out #authOverlay{display:flex;flex-direction:column;position:fixed;left:44%;right:0;top:0;bottom:0;background:#f8fafc;align-items:center;justify-content:center;overflow-y:auto;padding:52px 24px 40px;z-index:95}
+  html.gate-out #gateHead{display:block;font-family:"Sora",sans-serif;font-size:21px;font-weight:800;letter-spacing:.12em;color:var(--navy);margin:0 0 26px;text-align:center}
+  html.gate-out .auth-sheet{box-shadow:0 24px 60px rgba(10,30,51,.14);border:1px solid var(--line);border-radius:20px;max-height:none;overflow:visible;width:100%;max-width:440px;padding:30px 32px;background:#fff}
   html.gate-out .auth-lockup, html.gate-out #authClose{display:none}
-  html.gate-out #socialGoogle{background:var(--accent);border-color:var(--accent);color:#fff}
+  html.gate-out #socialGoogle{background:linear-gradient(120deg,var(--accent),#6d28d9);border-color:transparent;color:#fff;box-shadow:0 10px 24px rgba(37,99,235,.35)}
   html.gate-out #socialGoogle:hover{background:var(--accent-dark)}
   @media (max-width:900px){
     html.gate-out #gateBrand{position:static;width:100%}
@@ -553,9 +560,27 @@
     .gate-plats{margin-top:0}
     .gate-plat svg{width:34px;height:34px}
     html.gate-out #authOverlay{position:static;padding:28px 18px 36px}
+    html.gate-out .auth-sheet{padding:24px 20px}
   }
   .excl-box{margin-top:22px;border-top:1px solid var(--line);padding-top:16px;max-width:640px}
   .excl-box h3{font-size:16px;margin-bottom:2px}
+
+  /* ===== AI Help chat ===== */
+  .aihelp-sheet{max-width:440px}
+  .aihelp-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+  .aihelp-head h3{font-size:21px}
+  .aihelp-head .sub{color:var(--muted);font-size:14px;margin-top:2px}
+  .aihelp-msgs{display:flex;flex-direction:column;gap:8px;margin:16px 0;max-height:320px;overflow:auto;padding-right:4px}
+  .aihelp-msg{max-width:88%;padding:9px 12px;border-radius:12px;font-size:14px;line-height:1.5;white-space:pre-line}
+  .aihelp-msg.bot{background:var(--surface2);border:1px solid var(--line);align-self:flex-start}
+  .aihelp-msg.user{background:var(--accent);color:#fff;align-self:flex-end}
+  .aihelp-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+  .aihelp-chips button{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:999px;padding:5px 11px;font-size:12.5px;font-weight:700;cursor:pointer}
+  .aihelp-chips button:hover{border-color:var(--accent);color:var(--accent-dark)}
+  .aihelp-form{display:flex;gap:8px}
+  .aihelp-form input{flex:1;min-width:0;font-size:14.5px;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:#fff;color:var(--ink);outline:0}
+  .aihelp-form input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .aihelp-note{font-size:12px;color:var(--muted);margin:10px 0 0;line-height:1.45}
 
 </style>
 </head>
@@ -607,6 +632,10 @@
       <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
       <span>Tracked</span>
       <span class="cnt" id="sideTrackCount" hidden>0</span>
+    </button>
+    <button class="side-btn aihelp-btn" type="button" id="navAiHelp">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3z"/><path d="M19 15l.9 2.4 2.1.9-2.1.9-.9 2.4-.9-2.4-2.1-.9 2.1-.9.9-2.4z"/></svg>
+      <span>AI Help</span>
     </button>
     <button class="side-btn" type="button" id="navSettings">
       <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19 12a7 7 0 0 0-.14-1.4l2-1.55-2-3.46-2.36.95A7 7 0 0 0 14.1 5.1L13.7 2.6h-3.4l-.4 2.5a7 7 0 0 0-2.4 1.44l-2.36-.95-2 3.46 2 1.55a7 7 0 0 0 0 2.8l-2 1.55 2 3.46 2.36-.95a7 7 0 0 0 2.4 1.44l.4 2.5h3.4l.4-2.5a7 7 0 0 0 2.4-1.44l2.36.95 2-3.46-2-1.55c.1-.45.14-.92.14-1.4z"/></svg>
@@ -1107,6 +1136,31 @@
     </form>
     <p class="auth-note">Local login — accounts are saved in this browser only; real Google/GitHub/Apple sign-in needs a server, so the buttons above only save a name and email here. Nothing is sent anywhere. Forgot your password? Use the reset link above — the new password replaces the one stored in this browser.</p>
     <button class="btn2" type="button" id="authClose" style="width:100%;margin-top:10px">Close</button>
+  </div>
+</div>
+
+<div class="overlay" id="aiHelpOverlay" role="dialog" aria-modal="true" aria-label="AI Help">
+  <div class="sheet aihelp-sheet" id="aiHelpSheet">
+    <div class="aihelp-head">
+      <div>
+        <h3>AI Help</h3>
+        <div class="sub">Ask about JR Space — search, filters, lists, campaigns, login.</div>
+      </div>
+      <button class="btn2" type="button" id="aiHelpClose">Close</button>
+    </div>
+    <div class="aihelp-msgs" id="aiHelpMsgs"></div>
+    <div class="aihelp-chips" id="aiHelpChips">
+      <button type="button" data-q="How do I search creators?">How to search</button>
+      <button type="button" data-q="How do filters work?">Filters</button>
+      <button type="button" data-q="How do I save a creator to a list?">Save to a list</button>
+      <button type="button" data-q="How do campaigns work?">Campaigns</button>
+      <button type="button" data-q="I can't log in">Login help</button>
+    </div>
+    <form class="aihelp-form" id="aiHelpForm">
+      <input id="aiHelpInput" type="text" placeholder="Type your question…" autocomplete="off" />
+      <button class="btn2 solid" type="submit">Send</button>
+    </form>
+    <p class="aihelp-note">Built-in helper — answers come from JR Space's own help guide. Nothing is sent anywhere, and no account or password is ever asked for here.</p>
   </div>
 </div>
 
@@ -2288,6 +2342,28 @@ document.getElementById("navListsBtn").addEventListener("click", function(){ sho
 document.getElementById("navCampaigns").addEventListener("click", function(){ showView("campaigns"); window.scrollTo({top:0, behavior:"smooth"}); });
 document.getElementById("navSaved").addEventListener("click", function(){ showView("saved"); window.scrollTo({top:0, behavior:"smooth"}); });
 document.getElementById("navSettings").addEventListener("click", function(){ showView("settings"); window.scrollTo({top:0, behavior:"smooth"}); });
+
+/* ===== AI Help chat — built-in helper, no server, nothing sent anywhere ===== */
+var AIHELP_FAQ=[
+ {k:["search","find","hashtag","topic","keyword","discover"],a:"To find creators, use the AI Search tab or the simple search box at the top of Discover. Type a topic (fitness), a hashtag (#fitness), a name, @handle, city or email. Use the left filters to narrow by platform, followers, views, engagement, location or status, then press Search."},
+ {k:["filter","followers","views","engagement","location","status","platform"],a:"Filters live in the left panel on Discover: pick a platform, type a topic, set free From–To numbers for Followers, Views, Likes or Engagement %, choose a country and a status. Press Search to apply, or Clear filters to reset everything."},
+ {k:["list","save"],a:"To save a creator, open their profile and press 'Save to list', or use 'Save to list' on a table row. Lists live under Saved Lists in the sidebar. A creator can only appear once in a list — duplicates are blocked automatically."},
+ {k:["campaign"],a:"Campaigns live under Campaigns in the sidebar. Add creators to a campaign, set its status, and keep notes per creator. Campaign performance cards and CSV export are on the Campaigns page."},
+ {k:["login","log in","sign in","password","account","log out"],a:"Login here is local to this browser only — accounts are saved on this device, and nothing is sent to Google, GitHub or Apple. If you forgot your local password, use 'Forgot your local password? Reset it' on the login screen. Real Google/GitHub/Apple sign-in needs a server, which JR Space does not have yet."},
+ {k:["export","csv","download"],a:"Use the CSV button in the filter panel to export the creators currently shown. Exports are unlimited and free."},
+ {k:["track","tracked"],a:"Press 'Track' on a creator row to watch them. Tracked creators live under Tracked in the sidebar."},
+ {k:["verif"],a:"'Verified pass' means the creator's profile was checked against their live profile. 'Unverified' means not checked yet — the profile is still shown, with missing details left blank, never invented."},
+ {k:["email","outreach","contact"],a:"If a creator has a public email, it shows on their profile and in the table. Use it for outreach, or draft a message from the creator's profile — JR Space only uses emails the creator published themselves."},
+ {k:["platform","instagram","tiktok","youtube","facebook","threads","twitch","linkedin"],a:"JR Space covers 8 platforms: Instagram, TikTok, YouTube, X, Twitch, LinkedIn, Threads and Facebook. Pick one in the platform tabs on the left of Discover, or 'All' for every platform."}
+];
+function aiHelpAnswer(q){ var t=(" "+q.toLowerCase()+" "); for(var i=0;i<AIHELP_FAQ.length;i++){ var f=AIHELP_FAQ[i]; for(var j=0;j<f.k.length;j++){ if(t.indexOf(f.k[j])!==-1) return f.a; } } return "I can help with searching, filters, lists, campaigns, login, tracking and exports. Try one of the quick questions below, or rephrase — for example 'How do I save a creator to a list?'"; }
+function aiHelpAdd(role,text){ var m=document.getElementById("aiHelpMsgs"); if(!m) return; var d=document.createElement("div"); d.className="aihelp-msg "+role; d.textContent=text; m.appendChild(d); m.scrollTop=m.scrollHeight; }
+function aiHelpAsk(q){ if(!q) return; aiHelpAdd("user",q); setTimeout(function(){ aiHelpAdd("bot",aiHelpAnswer(q)); },250); }
+document.getElementById("navAiHelp").addEventListener("click",function(){ document.getElementById("aiHelpOverlay").classList.add("show"); var m=document.getElementById("aiHelpMsgs"); if(m && !m.children.length){ aiHelpAdd("bot","Hi! I'm JR Space's built-in helper. Ask me how to search, filter, save creators, run a campaign, or fix a login — or tap a quick question below."); } });
+document.getElementById("aiHelpClose").addEventListener("click",function(){ document.getElementById("aiHelpOverlay").classList.remove("show"); });
+document.getElementById("aiHelpOverlay").addEventListener("click",function(e){ if(e.target===this) this.classList.remove("show"); });
+document.getElementById("aiHelpForm").addEventListener("submit",function(e){ e.preventDefault(); var inp=document.getElementById("aiHelpInput"); var q=inp.value.trim(); inp.value=""; aiHelpAsk(q); });
+document.getElementById("aiHelpChips").addEventListener("click",function(e){ var b=e.target.closest("button[data-q]"); if(b) aiHelpAsk(b.getAttribute("data-q")); });
 
 
 /* ============================================================
