@@ -105,10 +105,6 @@
   .nl-parsed:empty{display:none}
   .parsed-pill{font-size:12.5px;font-weight:700;background:var(--accent);color:#fff;border-radius:999px;padding:4px 10px}
   .parsed-clear{font-size:12.5px;font-weight:700;background:transparent;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:4px 10px}
-  .topic-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:14px 22px 2px}
-  .topic-bar .lbl{font-size:13px;color:var(--muted);font-weight:700}
-  .topic-chip{border:1px solid #cfddfb;background:var(--accent-soft);color:var(--accent-dark);border-radius:999px;padding:5px 12px;font-size:13px;font-weight:700}
-  .topic-chip:hover{border-color:var(--accent);background:#dbe7fd}
   .criteria{margin-top:13px;display:flex;flex-wrap:wrap;gap:7px}
   .criteria span{font-size:12.5px;font-weight:600;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px 10px}
   .criteria span b{color:var(--accent-dark)}
@@ -703,8 +699,6 @@
       <p class="mode-note">Type a topic (fitness) or a hashtag (#fitness) and creators on that topic appear below. Names, @handles, cities and emails work too — for smart understanding, use the AI Search tab.</p>
     </div>
 
-    <div class="topic-bar" id="topicRow" aria-label="Popular topics and hashtags"></div>
-
     <div class="dash">
       <aside class="leftcol" aria-label="Filters">
         <div class="plat-tabs" id="platTabs" role="tablist" aria-label="Platforms">
@@ -1182,7 +1176,6 @@ function showDataError(){
 }
 function refreshAfterData(){
   fillNiches();
-  buildTopicChips();
   renderCompareBar();
   updateListsTab();
   render(false);
@@ -2122,26 +2115,6 @@ document.getElementById("qBasic").addEventListener("input", function(){ plainMir
 document.getElementById("fCreator").addEventListener("input", function(){ plainMirror(this.value, "fCreator"); });
 document.getElementById("q").addEventListener("input", function(){ var v=this.value.trim(); if(v.indexOf(" ")===-1) render(); });
 document.getElementById("fBio").addEventListener("input", function(){ render(); });
-
-/* ---------- Popular topics & hashtags — built from the topics in the data ---------- */
-function buildTopicChips(){
-  var row=document.getElementById("topicRow"); if(!row) return;
-  var counts={};
-  CREATORS.forEach(function(c){ nicheTokens(c).forEach(function(tok){ var k=tok.trim(); if(k.length>=3) counts[k]=(counts[k]||0)+1; }); });
-  var tops=Object.keys(counts).filter(function(k){ return counts[k]>=5; }).sort(function(a,b){ return counts[b]-counts[a]; }).slice(0,12);
-  if(!tops.length){ row.innerHTML=""; return; }
-  row.innerHTML='<span class="lbl">Popular topics &amp; hashtags:</span>'+tops.map(function(t){
-    return '<button class="topic-chip" type="button" data-topic="'+esc(t)+'">#'+esc(t.replace(/[\s\/]+/g,""))+'</button>';
-  }).join("");
-  row.querySelectorAll("[data-topic]").forEach(function(b){
-    b.addEventListener("click", function(){ runTopicSearch(b.getAttribute("data-topic")); });
-  });
-}
-function runTopicSearch(topic){
-  switchMode("ai");
-  document.getElementById("q").value="#"+String(topic||"").replace(/[\s\/]+/g,"");
-  applySmartSearch();
-}
 
 /* ---------- Filter listeners ---------- */
 ["fStatus","fLocation","fLastPost","fSort","fScreen"].forEach(function(id){
