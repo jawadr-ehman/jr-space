@@ -1,8 +1,1 @@
-{
-  "chunks": 12,
-  "name": "Jarvis Data Finder",
-  "note": "Own database built from public profiles + live checks. No copied data from EasyKOL/Modash. Status: verified_pass, verified_fail, pending (UK Muslim brief), unverified (global creators, real profiles not brief-checked).",
-  "total": 75193,
-  "updated": "2026-11-24",
-  "version": 1
-}
+{"chunks": 12, "name": "Jarvis Data Finder", "note": "Own database built from public profiles + live checks. No copied data from EasyKOL/Modash. Status: verified_pass, verified_fail, pending (UK Muslim brief), unverified (global creators, real profiles not brief-checked).", "total": 75182, "updated": "2026-11-25", "version": 1}
