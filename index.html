@@ -1456,6 +1456,8 @@
 var CREATORS_DB = null;
 var CREATORS = [];
 var DATA_READY = false;
+var dedupTotalCache={n:-1,total:0};
+function dedupTotal(){ if(dedupTotalCache.n!==CREATORS.length){ dedupTotalCache={n:CREATORS.length, total:dedupeCreators(CREATORS).length}; } return dedupTotalCache.total; }
 var DATA_COMPLETE = false;
 var DATA_CHUNKS = 0;
 var dataLoadStarted = false;
@@ -1968,7 +1970,7 @@ function render(resetLimit){
     else { document.getElementById("emptyTitle").textContent="No creator matched"; document.getElementById("emptyText").textContent="Try loosening the filters or changing your search term."; }
   }
   var thc=document.getElementById("thCreator"); if(thc) thc.textContent="Creator "+fmtInt(currentList.length);
-  var noteTxt = currentList.length===CREATORS.length ? "" : "Filters are active — use Clear filters to reset.";
+  var noteTxt = currentList.length===dedupTotal() ? "" : "Filters are active — use Clear filters to reset.";
   if(!DATA_COMPLETE) noteTxt = (noteTxt ? noteTxt+" " : "") + "More creators are still loading — results update automatically.";
   document.getElementById("resultsNote").textContent = noteTxt;
   var sv=document.getElementById("fSort").value;
