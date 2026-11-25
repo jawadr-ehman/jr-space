@@ -159,7 +159,8 @@
   .tag-chip{display:inline-flex;align-items:center;gap:6px;background:var(--accent-soft);color:var(--accent-dark);border:1px solid var(--line);border-radius:999px;padding:3px 6px 3px 10px;font-size:12.5px;font-weight:600}
   .tag-chip button{border:0;background:transparent;color:inherit;font-size:14px;line-height:1;cursor:pointer;padding:2px 4px;border-radius:50%}
   .tag-chip button:hover{background:rgba(0,0,0,.08)}
-  .gender-row{display:flex;gap:6px}
+  .gender-row{display:flex;gap:6px;flex-wrap:wrap}
+  .gbtn{flex:1 1 28%}
   .gbtn{flex:1;padding:7px 0;border:1px solid var(--line);background:#fff;border-radius:8px;font-size:13.5px;cursor:pointer;color:var(--ink)}
   .gbtn.active{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:700}
   .loc-empty{padding:10px;font-size:13.5px;color:var(--muted)}
@@ -1082,6 +1083,7 @@
                 <button type="button" class="gbtn active" data-gender="">Any</button>
                 <button type="button" class="gbtn" data-gender="male">Male</button>
                 <button type="button" class="gbtn" data-gender="female">Female</button>
+                <button type="button" class="gbtn" data-gender="both">Both</button>
                 <button type="button" class="gbtn" data-gender="brand">Brands</button>
               </div>
               <p class="f-hint">Only creators with gender or brand recorded will match — most creators have neither recorded yet.</p>
@@ -1844,6 +1846,7 @@ function applyFilters(){
     if(f.nicheTerms && f.nicheTerms.length){ var nok=false; for(var ni=0; ni<f.nicheTerms.length; ni++){ if(topicMatch(c, f.nicheTerms[ni])){ nok=true; break; } } if(!nok) return false; }
     if(f.hashTerms && f.hashTerms.length){ var hok=false; for(var hi=0; hi<f.hashTerms.length; hi++){ if(topicMatch(c, f.hashTerms[hi])){ hok=true; break; } } if(!hok) return false; }
     if(f.gender==="brand"){ if(!(c.brand===true || c.is_brand===true || String(c.type||"").toLowerCase()==="brand")) return false; }
+    else if(f.gender==="both"){ var gv=String(c.gender||"").toLowerCase(); if(gv!=="male" && gv!=="female") return false; }
     else if(f.gender && String(c.gender||"").toLowerCase()!==f.gender) return false;
     if(smartTags.length){ var tOk=false; for(var ti=0; ti<smartTags.length; ti++){ if(topicMatch(c, smartTags[ti])){ tOk=true; break; } } if(!tOk) return false; }
     if(f.tag && tagsFor(c).indexOf(f.tag)===-1) return false;
@@ -2749,7 +2752,7 @@ function filterSummary(snap){
   if(snap.location) parts.push(snap.location.split(",").join(", "));
   if(snap.nicheTerms && snap.nicheTerms.length) parts.push("Topics: "+snap.nicheTerms.join(", "));
   if(snap.hashTerms && snap.hashTerms.length) parts.push("Hashtags: "+snap.hashTerms.join(", "));
-  if(snap.gender) parts.push(snap.gender==="brand" ? "Brands only" : "Gender: "+snap.gender);
+  if(snap.gender) parts.push(snap.gender==="brand" ? "Brands only" : snap.gender==="both" ? "Male & Female" : "Gender: "+snap.gender);
   if(snap.status) parts.push("Status: "+snap.status);
   if(snap.folFrom || snap.folTo) parts.push("Followers "+(snap.folFrom||"0")+" – "+(snap.folTo||"any"));
   if(snap.viewsFrom || snap.viewsTo) parts.push("Views "+(snap.viewsFrom||"0")+" – "+(snap.viewsTo||"any"));
