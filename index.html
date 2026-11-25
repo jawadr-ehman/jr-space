@@ -1109,7 +1109,7 @@
               <input id="fHash" type="text" placeholder="Type a #hashtag, press Enter to add" autocomplete="off" />
               <div class="tag-chips" id="hashChips"></div>
             </div>
-            <p class="mode-note" style="margin-top:2px">Add as many topics or #hashtags as you like — results match ANY of them.</p>
+            <p class="mode-note" style="margin-top:2px">Add as many topics or #hashtags as you like — results match ANY of them. Deep search is on: every keyword is matched across the creator's niche, bio, hashtags, name and recent post titles.</p>
           </div>
         </div>
 
@@ -1577,16 +1577,29 @@ function clearSmart(){ smartLoc=""; smartUK=false; smartMuslim=false; smartNoMus
    "daily routine" (spaces, underscores and dashes ignored) in a creator's
    topics, bio or hashtags, and also matches the plain word in name or @handle. */
 function normTopicText(s){ return String(s||"").toLowerCase().replace(/[\s_\-\/&]+/g,""); }
+function creatorDeepText(c){
+  var tagStr=c.hashtags ? (Array.isArray(c.hashtags) ? c.hashtags.join(" ") : String(c.hashtags)) : "";
+  var reelStr="";
+  if(c.reels && c.reels.length){ reelStr=c.reels.map(function(r){ return (r && r.title) ? r.title : ""; }).join(" "); }
+  return ((c.niche||"")+" "+(c.bio||"")+" "+tagStr+" "+(c.name||"")+" "+(c.handle||"")+" "+(c.location||"")+" "+reelStr).toLowerCase();
+}
 function topicMatch(c, term){
   var raw=String(term||"").toLowerCase().replace(/^#+/,"").trim();
   if(!raw) return true;
-  var tagStr=c.hashtags ? (Array.isArray(c.hashtags) ? c.hashtags.join(" ") : String(c.hashtags)) : "";
-  var topics=((c.niche||"")+" "+(c.bio||"")+" "+tagStr).toLowerCase();
-  if(topics.indexOf(raw)!==-1) return true;
+  var deep=creatorDeepText(c);
+  if(deep.indexOf(raw)!==-1) return true;
+  var nd=normTopicText(deep);
   var nt=normTopicText(raw);
-  if(nt && normTopicText(topics).indexOf(nt)!==-1) return true;
-  var who=((c.name||"")+" "+(c.handle||"")).toLowerCase();
-  return who.indexOf(raw)!==-1;
+  if(nt && nd.indexOf(nt)!==-1) return true;
+  var words=raw.split(/\s+/).filter(function(w){ return w.length>=2; });
+  if(words.length>1){
+    for(var wi=0; wi<words.length; wi++){
+      var w=words[wi];
+      if(deep.indexOf(w)===-1 && nd.indexOf(normTopicText(w))===-1) return false;
+    }
+    return true;
+  }
+  return false;
 }
 function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
 function fmtNum(n){ if(n===0) return "0"; if(!n) return "—"; if(n>=1000000) return (Math.round(n/100000)/10).toString().replace(/\.0$/,"") + "M"; if(n>=1000) return (Math.round(n/100)/10).toString().replace(/\.0$/,"") + "K"; return String(n); }
