@@ -1077,13 +1077,14 @@
               <div class="tag-chips" id="locChips"></div>
             </div>
             <div class="field">
-              <label>Gender</label>
+              <label>Gender / Type</label>
               <div class="gender-row" id="genderRow">
                 <button type="button" class="gbtn active" data-gender="">Any</button>
                 <button type="button" class="gbtn" data-gender="male">Male</button>
                 <button type="button" class="gbtn" data-gender="female">Female</button>
+                <button type="button" class="gbtn" data-gender="brand">Brands</button>
               </div>
-              <p class="f-hint">Only creators with gender recorded will match — most creators have no gender recorded yet.</p>
+              <p class="f-hint">Only creators with gender or brand recorded will match — most creators have neither recorded yet.</p>
             </div>
           </div>
         </div>
@@ -1842,7 +1843,8 @@ function applyFilters(){
     if(f.verifiedOnly && c.status!=="verified_pass") return false;
     if(f.nicheTerms && f.nicheTerms.length){ var nok=false; for(var ni=0; ni<f.nicheTerms.length; ni++){ if(topicMatch(c, f.nicheTerms[ni])){ nok=true; break; } } if(!nok) return false; }
     if(f.hashTerms && f.hashTerms.length){ var hok=false; for(var hi=0; hi<f.hashTerms.length; hi++){ if(topicMatch(c, f.hashTerms[hi])){ hok=true; break; } } if(!hok) return false; }
-    if(f.gender && String(c.gender||"").toLowerCase()!==f.gender) return false;
+    if(f.gender==="brand"){ if(!(c.brand===true || c.is_brand===true || String(c.type||"").toLowerCase()==="brand")) return false; }
+    else if(f.gender && String(c.gender||"").toLowerCase()!==f.gender) return false;
     if(smartTags.length){ var tOk=false; for(var ti=0; ti<smartTags.length; ti++){ if(topicMatch(c, smartTags[ti])){ tOk=true; break; } } if(!tOk) return false; }
     if(f.tag && tagsFor(c).indexOf(f.tag)===-1) return false;
     if(isExcluded(c)) return false;
@@ -2747,7 +2749,7 @@ function filterSummary(snap){
   if(snap.location) parts.push(snap.location.split(",").join(", "));
   if(snap.nicheTerms && snap.nicheTerms.length) parts.push("Topics: "+snap.nicheTerms.join(", "));
   if(snap.hashTerms && snap.hashTerms.length) parts.push("Hashtags: "+snap.hashTerms.join(", "));
-  if(snap.gender) parts.push("Gender: "+snap.gender);
+  if(snap.gender) parts.push(snap.gender==="brand" ? "Brands only" : "Gender: "+snap.gender);
   if(snap.status) parts.push("Status: "+snap.status);
   if(snap.folFrom || snap.folTo) parts.push("Followers "+(snap.folFrom||"0")+" – "+(snap.folTo||"any"));
   if(snap.viewsFrom || snap.viewsTo) parts.push("Views "+(snap.viewsFrom||"0")+" – "+(snap.viewsTo||"any"));
