@@ -160,9 +160,17 @@
   .tag-chip button{border:0;background:transparent;color:inherit;font-size:14px;line-height:1;cursor:pointer;padding:2px 4px;border-radius:50%}
   .tag-chip button:hover{background:rgba(0,0,0,.08)}
   .gender-row{display:flex;gap:6px;flex-wrap:wrap}
-  .gbtn{flex:1 1 28%}
-  .gbtn{flex:1;padding:7px 0;border:1px solid var(--line);background:#fff;border-radius:8px;font-size:13.5px;cursor:pointer;color:var(--ink)}
-  .gbtn.active{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:700}
+  .gbtn{flex:1 1 28%;border:1px solid var(--line);background:var(--surface2);color:var(--ink);border-radius:9px;padding:9px 6px;font-weight:700;font-size:14px;cursor:pointer;overflow:hidden;position:relative;transition:border-color .2s ease,background .25s ease,color .25s ease,transform .12s ease}
+  .gbtn:hover{border-color:var(--accent)}
+  .gbtn:active{transform:scale(.94)}
+  .gbtn.active{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+  .gbtn.active:hover{background:var(--accent-dark)}
+  .gbtn.active::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%);transform:translateX(-130%);animation:gshine 1.4s ease .05s 1 forwards;pointer-events:none}
+  @keyframes gshine{to{transform:translateX(130%)}}
+  .groll{display:block;height:1.3em;overflow:hidden}
+  .groll-in{display:flex;flex-direction:column;transition:transform .38s cubic-bezier(.65,0,.3,1)}
+  .groll-in span{display:block;height:1.3em;line-height:1.3em}
+  .gbtn:hover .groll-in,.gbtn:active .groll-in,.gbtn.active .groll-in{transform:translateY(-1.3em)}
   .loc-empty{padding:10px;font-size:13.5px;color:var(--muted)}
   .fromto{display:flex;gap:7px;align-items:center}
   .fromto input{width:100%;font-size:14px;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--ink);outline:0;min-width:0}
@@ -2495,7 +2503,11 @@ document.getElementById("fNiche").addEventListener("input", function(){ render()
 document.getElementById("fNiche").addEventListener("change", function(){ render(); });
 document.getElementById("fNiche").addEventListener("keydown", function(e){ if(e.key==="Enter" || e.key===","){ e.preventDefault(); addTerm("niche", this.value); this.value=""; render(); } });
 var fHashEl2=document.getElementById("fHash"); if(fHashEl2) fHashEl2.addEventListener("keydown", function(e){ if(e.key==="Enter" || e.key===","){ e.preventDefault(); addTerm("hash", this.value); this.value=""; render(); } });
-document.querySelectorAll("#genderRow .gbtn").forEach(function(b){ b.addEventListener("click", function(){ setGender(b.getAttribute("data-gender")); render(); }); });
+document.querySelectorAll("#genderRow .gbtn").forEach(function(b){
+  var gl=b.textContent.trim();
+  b.innerHTML='<span class="groll"><span class="groll-in"><span>'+gl+'</span><span>'+gl+'</span></span></span>';
+  b.addEventListener("click", function(){ setGender(b.getAttribute("data-gender")); render(); });
+});
 ["nicheChips","hashChips"].forEach(function(id){ var box=document.getElementById(id); if(box) box.addEventListener("click", function(e){ var b=e.target && e.target.closest ? e.target.closest("[data-term-remove]") : null; if(!b) return; var kind=b.getAttribute("data-term-remove"), t=b.getAttribute("data-term"); var arr = kind==="hash" ? hashTerms : topicTerms; var ix=arr.indexOf(t); if(ix!==-1) arr.splice(ix,1); renderTagChips(); render(); }); });
 ["fFolFrom","fFolTo","fViewsFrom","fViewsTo","fLikesFrom","fLikesTo","fERFrom","fERTo"].forEach(function(id){ document.getElementById(id).addEventListener("input", function(){ render(); }); });
 document.getElementById("fEmailToggle").addEventListener("change", function(){ render(); });
