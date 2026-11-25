@@ -327,6 +327,10 @@
   .panel-wrap{margin:12px 16px 0;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:20px 22px 24px}
   .panel-head h2{font-size:21px}
   .panel-head p{margin:4px 0 0;color:var(--muted);font-size:14px;max-width:680px}
+  .dash-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:10px;margin:16px 0 4px}
+  .dash-tile{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+  .dash-tile b{display:block;font-size:21px;line-height:1.15}
+  .dash-tile span{font-size:12px;color:var(--muted)}
   .dash-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:6px}
   .dash-col h3{font-size:16px;margin-bottom:10px}
   .ad-feed-h{font-family:"Sora",sans-serif;font-size:14.5px;font-weight:700;margin:16px 0 9px}
@@ -943,6 +947,7 @@
       </div>
       <button class="btn" type="submit">Search creators</button>
     </form>
+    <div class="dash-tiles" id="dashTiles"></div>
     <div class="dash-cols">
       <div class="dash-col">
         <h3>Recent searches</h3>
@@ -1086,7 +1091,7 @@
                 <button type="button" class="gbtn" data-gender="both">Both</button>
                 <button type="button" class="gbtn" data-gender="brand">Brands</button>
               </div>
-              <p class="f-hint">Only creators with gender or brand recorded will match — most creators have neither recorded yet.</p>
+              <p class="f-hint">Gender and brand are not recorded for any creator yet — Male, Female, Both and Brands will start matching as soon as that data is added.</p>
             </div>
           </div>
         </div>
@@ -1241,6 +1246,7 @@
         <input id="listFilter" type="search" placeholder="Filter this list — name, handle, city, niche" autocomplete="off" />
         <button class="btn2 solid" id="listExportBtn" type="button">List CSV download</button>
         <button class="btn2" id="listEmailsBtn" type="button">Export emails CSV</button>
+        <button class="btn2" id="listRenameBtn" type="button">Rename list</button>
       </div>
       <p class="countline" id="listCountLine" style="margin:0 0 12px"></p>
       <div class="rows" id="listGrid" aria-live="polite"></div>
@@ -2103,7 +2109,7 @@ function openDetail(c){
   h += '<dl class="kv">'+
     row("Status", sm.label.replace("✓ ","").replace("✕ ","").replace("◐ ","").replace("○ ",""))+
     row("Followers (exact)", (c.followers? c.followers.toLocaleString("en-GB") : "—")+" ("+fmtNum(c.followers)+" compact)")+
-    row("City", c.location||"Not recorded")+
+    row("Location", c.location||"Not recorded")+
     row("Engagement (ER)", erText(c)==="—"?"Not checked":erText(c))+
     row("Average views", c.views? fmtInt(c.views)+" ("+fmtNum(c.views)+" compact)" : "—")+
     row("Niche", c.niche)+
@@ -2121,6 +2127,7 @@ function openDetail(c){
     '<button class="mini cmp-btn" type="button" id="sheetCompare">Compare</button>'+
     '<button class="mini track-btn" type="button" id="sheetTrack">Track</button>'+
     '<button class="mini" type="button" id="sheetSave">☆ Save to list</button>'+
+    '<button class="mini" type="button" id="sheetCampaign">Add to campaign</button>'+
     '<button class="mini" type="button" id="sheetExclude">'+(isExcluded(c)?'✓ Excluded':'Exclude')+'</button>'+
     '<a class="open" href="'+esc(c.link)+'" target="_blank" rel="noopener" style="margin-left:0">Open profile</a>'+
     '</div>';
@@ -2141,6 +2148,8 @@ function openDetail(c){
   document.getElementById("sheetClose").addEventListener("click", closeDetail);
   var sv=document.getElementById("sheetSave");
   if(sv) sv.addEventListener("click", function(){ openSavePicker(c); });
+  var scp=document.getElementById("sheetCampaign");
+  if(scp) scp.addEventListener("click", function(){ openCampaignPicker(c); });
   wireDetailExtras(c);
   var ce=document.getElementById("sheetCopyEmail");
   if(ce) ce.addEventListener("click", function(){ if(navigator.clipboard) navigator.clipboard.writeText(c.email); ce.textContent="Copied ✓"; setTimeout(function(){ ce.textContent="Copy email"; },1400); });
@@ -2265,17 +2274,37 @@ function renderListCards(){
     '<div class="lc-actions"><button class="btn2 solid" type="button" data-open-list="'+esc(l.id)+'">Open list</button>'+
     '<button class="btn2" type="button" data-export-list="'+esc(l.id)+'">CSV export</button>'+
     '<button class="btn2" type="button" data-export-emails="'+esc(l.id)+'">Emails CSV</button>'+
+    '<button class="btn2" type="button" data-rename-list="'+esc(l.id)+'">Rename</button>'+
     '<button class="btn2" type="button" data-delete-list="'+esc(l.id)+'">Delete</button></div></div>';
   }).join("");
   box.querySelectorAll("[data-open-list]").forEach(function(b){ b.addEventListener("click", function(){ openList(b.getAttribute("data-open-list")); }); });
   box.querySelectorAll("[data-export-list]").forEach(function(b){ b.addEventListener("click", function(){ var l=getList(b.getAttribute("data-export-list")); if(l) exportCSV(listMembers(l), "jr-space-list-"+l.name.toLowerCase().replace(/[^a-z0-9]+/g,"-")+".csv"); }); });
   box.querySelectorAll("[data-export-emails]").forEach(function(b){ b.addEventListener("click", function(){ var l=getList(b.getAttribute("data-export-emails")); if(l) exportEmailsCSV(listMembers(l), "jr-space-emails-"+l.name.toLowerCase().replace(/[^a-z0-9]+/g,"-")+".csv"); }); });
+  box.querySelectorAll("[data-rename-list]").forEach(function(b){ b.addEventListener("click", function(){ openRenameListDialog(b.getAttribute("data-rename-list")); }); });
   box.querySelectorAll("[data-delete-list]").forEach(function(b){ b.addEventListener("click", function(){
     var l=getList(b.getAttribute("data-delete-list")); if(!l) return;
     savedLists=savedLists.filter(function(x){ return x.id!==l.id; });
     if(activeListId===l.id){ activeListId=null; document.getElementById("openListBox").hidden=true; }
     saveListsStore(); updateListsTab(); renderListCards(); render(); toast("“"+l.name+"” list deleted");
   }); });
+}
+function openRenameListDialog(id){
+  var l=getList(id); if(!l) return;
+  var sheet=document.getElementById("sheet");
+  sheet.innerHTML='<h3 style="margin:0 0 6px">Rename list</h3>'+
+    '<p class="sim-sub" style="margin:0 0 10px">Give this list a new name. Creators inside it stay exactly as they are.</p>'+
+    '<input id="renameListInput" type="text" value="'+esc(l.name)+'" style="width:100%;padding:10px;border:1px solid var(--line);border-radius:9px;font:inherit" maxlength="80" />'+
+    '<div style="display:flex;gap:8px;margin-top:12px"><button class="btn2 solid" type="button" id="renameListSave">Save name</button>'+
+    '<button class="btn2" type="button" id="sheetClose">Cancel</button></div>';
+  document.getElementById("overlay").classList.add("show");
+  document.getElementById("sheetClose").addEventListener("click", closeDetail);
+  var inp=document.getElementById("renameListInput"); inp.focus(); inp.select();
+  document.getElementById("renameListSave").addEventListener("click", function(){
+    var nn=inp.value.trim(); if(!nn){ toast("Type a name first"); return; }
+    l.name=nn; saveListsStore(); updateListsTab(); renderListCards();
+    if(activeListId===l.id) document.getElementById("openListTitle").textContent=nn;
+    closeDetail(); toast("List renamed to \u201C"+nn+"\u201D");
+  });
 }
 function openList(id){
   var l=getList(id); if(!l) return;
@@ -2346,6 +2375,7 @@ document.getElementById("createListForm").addEventListener("submit", function(e)
 });
 document.getElementById("listBackBtn").addEventListener("click", function(){ activeListId=null; document.getElementById("openListBox").hidden=true; });
 document.getElementById("listFilter").addEventListener("input", renderListMembers);
+document.getElementById("listRenameBtn").addEventListener("click", function(){ if(activeListId) openRenameListDialog(activeListId); });
 document.getElementById("listExportBtn").addEventListener("click", function(){ var l=getList(activeListId); if(l) exportCSV(listMembers(l), "jr-space-list-"+l.name.toLowerCase().replace(/[^a-z0-9]+/g,"-")+".csv"); });
 document.getElementById("listEmailsBtn").addEventListener("click", function(){ var l=getList(activeListId); if(l) exportEmailsCSV(listMembers(l), "jr-space-emails-"+l.name.toLowerCase().replace(/[^a-z0-9]+/g,"-")+".csv"); });
 function showView(which){
@@ -2621,7 +2651,7 @@ function parseSmartQuery(raw){
   var recM=rest.match(/posted recently|recently posted|recently active|recent posts|active creators| active | recently /);
   if(recM){ document.getElementById("fLastPost").value="30"; chip("recent","Posted in last 30 days"); rest=rest.replace(recM[0]," "); }
   /* Leftover words → plain text search; a lone "x" means the X platform */
-  var stop={the:1,creators:1,creator:1,find:1,dhoondo:1,chahiye:1,with:1,and:1,aur:1,mein:1,wale:1,wala:1,only:1,sirf:1,show:1,dikhao:1,ko:1,ka:1,ki:1,ke:1,ho:1,hai:1,er:1,no:1,has:1,without:1,male:1,men:1,man:1,female:1,women:1,woman:1,ladies:1,girls:1,boys:1,guys:1};
+  var stop={the:1,creators:1,creator:1,find:1,in:1,followers:1,follower:1,subscribers:1,subscriber:1,subs:1,fans:1,over:1,above:1,under:1,below:1,than:1,more:1,less:1,views:1,likes:1,engagement:1,from:1,between:1,for:1,to:1,of:1,a:1,an:1,on:1,at:1,least:1,minimum:1,maximum:1,around:1,about:1,based:1,located:1,who:1,have:1,having:1,their:1,channels:1,channel:1,accounts:1,account:1,influencers:1,influencer:1,people:1,posts:1,videos:1,per:1,by:1,near:1,dhoondo:1,chahiye:1,with:1,and:1,aur:1,mein:1,wale:1,wala:1,only:1,sirf:1,show:1,dikhao:1,ko:1,ka:1,ki:1,ke:1,ho:1,hai:1,er:1,no:1,has:1,without:1,male:1,men:1,man:1,female:1,women:1,woman:1,ladies:1,girls:1,boys:1,guys:1};
   var leftover=rest.split(/\s+/).map(function(w){ return w.replace(/[^a-z0-9@_.\-]/g,""); }).filter(function(w){ return (w.length>=2 || w==="x") && !stop[w] && isNaN(parseFloat(w)); });
   leftover=leftover.filter(function(w){
     if(w==="x"){ if(!platformFilter){ setPlatform("X"); chip("platform","Platform: X"); } return false; }
@@ -2872,6 +2902,12 @@ function recordSearch(kind, queryText){
 
 /* ---------- Dashboard ---------- */
 function renderDashboard(){
+  var dt=document.getElementById("dashTiles");
+  if(dt){
+    var savedTotal=0; savedLists.forEach(function(l){ savedTotal+=l.keys.length; });
+    var tiles=[["My lists", savedLists.length],["Saved creators", savedTotal],["Tracked creators", trackedKeys.length],["Campaigns", campaigns.length],["Searches run", statsSearches]];
+    dt.innerHTML=tiles.map(function(t){ return '<div class="dash-tile"><b>'+t[1]+'</b><span>'+t[0]+'</span></div>'; }).join("");
+  }
   var rs=document.getElementById("dashRecentSearches");
   if(!rs) return;
   if(searchHistory.length){
@@ -3027,6 +3063,39 @@ function renderCampaigns(){
     if(activeCampaignId===cp.id){ activeCampaignId=null; document.getElementById("openCampBox").hidden=true; }
     saveCampaignsStore(); renderCampaigns(); toast("Campaign \u201C"+cp.name+"\u201D deleted");
   }); });
+}
+function openCampaignPicker(c){
+  var sheet=document.getElementById("sheet");
+  var k=creatorKey(c);
+  var h='<h3 style="margin:0 0 6px">Add to campaign</h3>'+
+    '<p class="sim-sub" style="margin:0 0 10px">Pick a campaign — '+esc(displayName(c))+' joins the list attached to it.</p>';
+  if(!campaigns.length){
+    h+='<div class="dash-empty">No campaigns yet. Create one in the Campaigns tab first (a campaign works from a saved list).</div>';
+  } else {
+    h+=campaigns.map(function(cp){
+      var l=getList(cp.listId);
+      var inside=l && l.keys.indexOf(k)!==-1;
+      return '<div class="sim-item"><span class="sn" style="flex:1">'+esc(cp.name)+'<br><span class="sh">'+(l? esc(l.name)+" · "+l.keys.length+" creators" : "no list attached yet")+'</span></span>'+
+      (inside? '<span class="mini" style="opacity:.65">✓ In campaign</span>' : '<button class="mini" type="button" data-camp-pick="'+esc(cp.id)+'">Add</button>')+'</div>';
+    }).join("");
+  }
+  h+='<button class="close" type="button" id="sheetClose">Close</button>';
+  sheet.innerHTML=h;
+  document.getElementById("overlay").classList.add("show");
+  document.getElementById("sheetClose").addEventListener("click", closeDetail);
+  sheet.querySelectorAll("[data-camp-pick]").forEach(function(b){
+    b.addEventListener("click", function(){
+      var cp=getCampaign(b.getAttribute("data-camp-pick")); if(!cp) return;
+      var l=getList(cp.listId);
+      if(!l){
+        l={id:"list-"+Date.now().toString(36), name:cp.name, keys:[]};
+        savedLists.push(l); cp.listId=l.id; saveListsStore(); saveCampaignsStore(); updateListsTab();
+      }
+      if(addToList(l.id, c)){ renderListCards(); }
+      closeDetail();
+      if(!document.getElementById("campaignsView").hidden) renderCampaigns();
+    });
+  });
 }
 function openCampaign(id){
   var cp=getCampaign(id); if(!cp) return;
