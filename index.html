@@ -1650,12 +1650,12 @@ function contentLinks(c){ var h=String(c.handle||"").trim().replace(/^@/,""); if
 } }
 function reelImgErr(img){ var fb=img.getAttribute("data-fb"); if(fb){ img.removeAttribute("data-fb"); img.src=fb; return; } avatarErr(img); }
 function reelsHTML(c, lg){
-  var reels=(c.reels && c.reels.length)? c.reels.slice(0,4).filter(function(r){ return r && r.url; }) : [];
+  var reels=(c.reels && c.reels.length)? c.reels.slice(0,3).filter(function(r){ return r && r.url; }) : [];
   if(reels.length){
     var label=(c.platform==="Instagram" || c.platform==="TikTok")? "Recent reels" : "Recent videos";
     var u=avatarURL(c); var live=liveAvatarURL(c); var prof=u||live;
     var tiles=reels.map(function(r){
-      var thumb=(r.thumb && /^https?:\/\//i.test(String(r.thumb)))? String(r.thumb) : "";
+      var thumb=(r.thumb && (/^https?:\/\//i.test(String(r.thumb)) || /^assets\//i.test(String(r.thumb))))? String(r.thumb) : "";
       var img=thumb||prof;
       var inner='<span class="rtile-ini" aria-hidden="true">'+esc(initials(c))+'</span>';
       if(img){
@@ -2091,6 +2091,7 @@ function row(k,v){ return "<dt>"+esc(k)+"</dt><dd>"+(v?esc(v):"—")+"</dd>"; }
 function dbDateStr(){ return fmtDate(CREATORS_DB.updated); }
 function isFreshToday(){ var t=new Date(); var iso=t.getFullYear()+"-"+String(t.getMonth()+1).padStart(2,"0")+"-"+String(t.getDate()).padStart(2,"0"); return CREATORS_DB.updated===iso; }
 function freshnessLabel(c){
+  if(c.updated){ var t=new Date(); var iso=t.getFullYear()+"-"+String(t.getMonth()+1).padStart(2,"0")+"-"+String(t.getDate()).padStart(2,"0"); return {txt:"Data refreshed · "+fmtDate(String(c.updated).slice(0,10)), fresh:String(c.updated).slice(0,10)===iso}; }
   if(c.status==="verified_pass" || c.status==="verified_fail") return {txt:"✓ Verified live · "+dbDateStr(), fresh:isFreshToday()};
   if(c.status==="pending") return {txt:"Candidate found · live check pending · database "+dbDateStr(), fresh:false};
   return {txt:"Profile data · "+dbDateStr(), fresh:false};
