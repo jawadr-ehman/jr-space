@@ -335,6 +335,21 @@
   .panel-wrap{margin:12px 16px 0;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:20px 22px 24px}
   .panel-head h2{font-size:21px}
   .panel-head p{margin:4px 0 0;color:var(--muted);font-size:14px;max-width:680px}
+  /* ===== Unified button system — one style across all of JR Space ===== */
+  .btn,.btn2,.mini,.auth-btn,.auth-tab,.social-btn,.ord-btn,.vt-btn,.cb-chip{border-radius:10px;transition:background .2s ease,border-color .2s ease,color .2s ease,transform .13s ease,box-shadow .2s ease}
+  .btn2,.mini,.auth-btn,.social-btn,.ord-btn{background:var(--surface2)}
+  .btn2:hover,.mini:hover,.auth-btn:hover,.social-btn:hover,.ord-btn:hover,.vt-btn:hover{border-color:var(--accent);transform:translateY(-1px);box-shadow:0 4px 12px rgba(10,30,51,.10)}
+  .btn:hover{box-shadow:0 10px 24px rgba(37,99,235,.42);transform:translateY(-1px)}
+  .btn2.solid:hover,.auth-btn.primary:hover,.sheet .close:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(37,99,235,.30)}
+  .btn:active,.btn2:active,.mini:active,.auth-btn:active,.auth-tab:active,.social-btn:active,.ord-btn:active,.vt-btn:active,.ptab:active,.side-btn:active,.cb-chip:active,.tag-chip:active{transform:scale(.95)}
+  .ptab{transition:background .2s ease,color .2s ease,transform .13s ease}
+  .side-btn{transition:background .2s ease,color .2s ease,transform .13s ease}
+  .mode-tab{transition:color .2s ease,border-color .2s ease}
+  .sortbtn{transition:color .2s ease,transform .13s ease}
+  button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .rollbtn{overflow:hidden;position:relative}
+  .rollbtn:hover .groll-in,.rollbtn:active .groll-in{transform:translateY(-1.3em)}
+  .btn.rollbtn{display:inline-flex;align-items:center;justify-content:center}
   .dash-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:10px;margin:16px 0 4px}
   .dash-tile{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
   .dash-tile b{display:block;font-size:21px;line-height:1.15}
@@ -2507,6 +2522,12 @@ document.querySelectorAll("#genderRow .gbtn").forEach(function(b){
   var gl=b.textContent.trim();
   b.innerHTML='<span class="groll"><span class="groll-in"><span>'+gl+'</span><span>'+gl+'</span></span></span>';
   b.addEventListener("click", function(){ setGender(b.getAttribute("data-gender")); render(); });
+});
+document.querySelectorAll("button.btn, button.btn2, button.mini").forEach(function(b){
+  if(b.children.length || b.closest("#overlay")) return;
+  var bt=b.textContent.trim(); if(!bt) return;
+  b.classList.add("rollbtn");
+  b.innerHTML='<span class="groll"><span class="groll-in"><span>'+esc(bt)+'</span><span>'+esc(bt)+'</span></span></span>';
 });
 ["nicheChips","hashChips"].forEach(function(id){ var box=document.getElementById(id); if(box) box.addEventListener("click", function(e){ var b=e.target && e.target.closest ? e.target.closest("[data-term-remove]") : null; if(!b) return; var kind=b.getAttribute("data-term-remove"), t=b.getAttribute("data-term"); var arr = kind==="hash" ? hashTerms : topicTerms; var ix=arr.indexOf(t); if(ix!==-1) arr.splice(ix,1); renderTagChips(); render(); }); });
 ["fFolFrom","fFolTo","fViewsFrom","fViewsTo","fLikesFrom","fLikesTo","fERFrom","fERTo"].forEach(function(id){ document.getElementById(id).addEventListener("input", function(){ render(); }); });
