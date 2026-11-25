@@ -1002,7 +1002,7 @@
         </div>
         <button class="btn" type="submit">Search</button>
       </form>
-      <p class="mode-note">Type a topic (fitness) or a hashtag (#fitness) and creators on that topic appear below. Names, @handles, cities and emails work too — for smart understanding, use the AI Search tab.</p>
+      <p class="mode-note">Type any topic or a #hashtag and creators on that topic appear below. Names, @handles, cities and emails work too — for smart understanding, use the AI Search tab.</p>
     </div>
 
     <div class="dash">
@@ -2704,7 +2704,7 @@ document.getElementById("navSettings").addEventListener("click", function(){ sho
 
 /* ===== AI Help chat — built-in helper, no server, nothing sent anywhere ===== */
 var AIHELP_FAQ=[
- {k:["search","find","hashtag","topic","keyword","discover"],a:"To find creators, use the AI Search tab or the simple search box at the top of Discover. Type a topic (fitness), a hashtag (#fitness), a name, @handle, city or email. Use the left filters to narrow by platform, followers, views, engagement, location or status, then press Search."},
+ {k:["search","find","hashtag","topic","keyword","discover"],a:"To find creators, use the AI Search tab or the simple search box at the top of Discover. Type any topic, a #hashtag, a name, @handle, city or email. Use the left filters to narrow by platform, followers, views, engagement, location or status, then press Search."},
  {k:["filter","followers","views","engagement","location","status","platform"],a:"Filters live in the left panel on Discover: pick a platform, type a topic, set free From–To numbers for Followers, Views, Likes or Engagement %, choose a country and a status. Press Search to apply, or Clear filters to reset everything."},
  {k:["list","save"],a:"To save a creator, open their profile and press 'Save to list', or use 'Save to list' on a table row. Lists live under Saved Lists in the sidebar. A creator can only appear once in a list — duplicates are blocked automatically."},
  {k:["campaign"],a:"Campaigns live under Campaigns in the sidebar. Add creators to a campaign, set its status, and keep notes per creator. Campaign performance cards and CSV export are on the Campaigns page."},
@@ -2892,7 +2892,7 @@ function openSaveFiltersDialog(){
   var sheet=document.getElementById("sheet");
   sheet.innerHTML="<h3>Save filters</h3>"+
     '<div class="sub">'+esc(filterSummary(snap))+'</div>'+
-    '<div class="pick-row"><input id="sfName" type="text" placeholder="Name this filter set — e.g. UK fitness 5k-100k" style="flex:1;font:inherit;font-size:14.5px;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink)" /></div>'+
+    '<div class="pick-row"><input id="sfName" type="text" placeholder="Name this filter set — e.g. UK creators 5k-100k" style="flex:1;font:inherit;font-size:14.5px;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink)" /></div>'+
     '<div class="sheet-actions"><button class="mini" type="button" id="sfDoSave" style="background:var(--accent);color:#fff;border-color:var(--accent)">Save filters</button></div>'+
     '<button class="close" type="button" id="sheetClose">Close</button>';
   document.getElementById("overlay").classList.add("show");
@@ -3000,7 +3000,7 @@ function openSaveSearchDialog(){
   var sheet=document.getElementById("sheet");
   sheet.innerHTML="<h3>Save this search</h3>"+
     '<div class="sub">'+esc(filterSummary(snap))+'</div>'+
-    '<div class="pick-row"><input id="ssName" type="text" placeholder="Name this search — e.g. UK fitness 5k-100k" style="flex:1;font:inherit;font-size:14.5px;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink)" /></div>'+
+    '<div class="pick-row"><input id="ssName" type="text" placeholder="Name this search — e.g. UK creators 5k-100k" style="flex:1;font:inherit;font-size:14.5px;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink)" /></div>'+
     '<div class="sheet-actions"><button class="mini" type="button" id="ssDoSave" style="background:var(--accent);color:#fff;border-color:var(--accent)">Save search</button></div>'+
     '<button class="close" type="button" id="sheetClose">Close</button>';
   document.getElementById("overlay").classList.add("show");
@@ -3342,7 +3342,7 @@ document.getElementById("authClose").addEventListener("click", closeAuth);
     if(b) b.addEventListener("click", function(){ var t=document.getElementById("landHow"); if(t) t.scrollIntoView({behavior:"smooth"}); });
   });
   var GUIDES={
-    find:{t:"How to find creators for your brand",b:"<ol><li>Type a topic (fitness, skincare) or a hashtag (#fitness) in AI Search, or use the Topics box in the filter panel.</li><li>Pick a platform and set follower and engagement ranges to narrow the list.</li><li>Open a creator to check their bio, email, followers and engagement — check every creator before you reach out.</li><li>Save the good ones to a list and compare up to 3 side by side.</li></ol>"},
+    find:{t:"How to find creators for your brand",b:"<ol><li>Type any topic or a #hashtag in AI Search, or use the Topics box in the filter panel.</li><li>Pick a platform and set follower and engagement ranges to narrow the list.</li><li>Open a creator to check their bio, email, followers and engagement — check every creator before you reach out.</li><li>Save the good ones to a list and compare up to 3 side by side.</li></ol>"},
     campaigns:{t:"Always-on creator campaigns",b:"<ol><li>Create a campaign from the Campaigns view and give it a name.</li><li>Add creators from their profile or from a list.</li><li>Track each creator's status — contacted, replied, posted — and add notes.</li><li>Keep a steady flow: add new creators every week instead of one big push.</li></ol>"},
     outreach:{t:"Outreach that gets replies",b:"<ol><li>Use the creator's own public email from their profile — never guess an address.</li><li>Keep it short: who you are, why this creator, and one clear next step.</li><li>Personalise one line per creator — their recent post or their niche.</li><li>Follow up once, then move on.</li></ol>"}
   };
