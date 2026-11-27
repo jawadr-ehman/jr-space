@@ -1382,7 +1382,27 @@
       "platform": "YouTube",
       "status": "verified_pass",
       "views": 1725000,
-      "email": "andrei@majikh.com"
+      "email": "andrei@majikh.com",
+      "avatar": "assets/avatars/youtube-andreijikh.jpg",
+      "reels": [
+        {
+          "title": "America Is Under Attack",
+          "url": "https://www.youtube.com/watch?v=S1B9R_83-8c",
+          "views": 1300000,
+          "thumb": null
+        },
+        {
+          "title": "Something Is Breaking America",
+          "url": "https://www.youtube.com/watch?v=BXzNwnVZJHs",
+          "thumb": null
+        },
+        {
+          "title": "Why Bitcoin Is Collapsing",
+          "url": "https://www.youtube.com/watch?v=CRqhR0tQnKM",
+          "thumb": null
+        }
+      ],
+      "updated": "2026-11-27"
     },
     {
       "bio": "Former Financial Advisor (Series 7, 66), Previously worked in Gaming. Explainers, Personal Finance, Reviews & More. My friends would ask me finance questions ...",
@@ -1515,7 +1535,7 @@
       "sponsored": false,
       "status": "verified_pass",
       "views": 14236800,
-      "updated": "2026-11-26"
+      "updated": "2026-11-27"
     },
     {
       "avatar": "assets/avatars/youtube-taylorswift.jpg",
@@ -2182,7 +2202,7 @@
     },
     {
       "bio": "Se vuoi ridere sei nel posto giusto😎 If u wanna laugh u r in the right place😎",
-      "followers": 162896711,
+      "followers": 162893836,
       "handle": "@khaby.lame",
       "hashtags": [
         "#learnfromkhaby",
@@ -2204,12 +2224,12 @@
       "status": "verified_pass",
       "views": 18027070,
       "avatar": "assets/avatars/tiktok-khaby.lame.jpg",
-      "likes": 2697154695,
-      "updated": "2026-11-26"
+      "likes": 2697688972,
+      "updated": "2026-11-27"
     },
     {
       "bio": "orca enthusiast / meg thee stallion fan / i post on youtube on saturdays (for the most part)",
-      "followers": 160309007,
+      "followers": 160315209,
       "handle": "@charlidamelio",
       "hashtags": [
         "#DWTS"
@@ -2223,14 +2243,14 @@
       "status": "verified_pass",
       "views": 2719530,
       "avatar": "assets/avatars/tiktok-charlidamelio.jpg",
-      "likes": 12389633469,
-      "updated": "2026-11-26"
+      "likes": 12389935257,
+      "updated": "2026-11-27"
     },
     {
       "bio": "Checkout My New Book! 👇",
-      "followers": 148159537,
+      "followers": 148229525,
       "handle": "@mrbeast",
-      "likes": 1578510881,
+      "likes": 1578968714,
       "link": "https://www.tiktok.com/@mrbeast",
       "location": "Greenville, United States",
       "name": "MrBeast",
@@ -2238,7 +2258,7 @@
       "platform": "TikTok",
       "status": "verified_pass",
       "avatar": "assets/avatars/tiktok-mrbeast.jpg",
-      "updated": "2026-11-26"
+      "updated": "2026-11-27"
     },
     {
       "bio": "Picnic At The Cemetery",
@@ -4566,7 +4586,9 @@
       "name": "Asmongold",
       "niche": "gaming",
       "platform": "Twitch",
-      "status": "verified_pass"
+      "status": "verified_pass",
+      "avatar": "assets/avatars/twitch-asmongold.jpg",
+      "updated": "2026-11-27"
     },
     {
       "followers": 3090000,
@@ -4576,7 +4598,9 @@
       "name": "HasanAbi",
       "niche": "gaming",
       "platform": "Twitch",
-      "status": "verified_pass"
+      "status": "verified_pass",
+      "avatar": "assets/avatars/twitch-hasanabi.jpg",
+      "updated": "2026-11-27"
     },
     {
       "followers": 1681223,
@@ -6206,7 +6230,9 @@
       "name": "SypherPK",
       "niche": "gaming",
       "platform": "Twitch",
-      "status": "verified_pass"
+      "status": "verified_pass",
+      "avatar": "assets/avatars/twitch-sypherpk.jpg",
+      "updated": "2026-11-27"
     },
     {
       "followers": 3200000,
@@ -6216,7 +6242,9 @@
       "name": "loltyler1",
       "niche": "gaming",
       "platform": "Twitch",
-      "status": "verified_pass"
+      "status": "verified_pass",
+      "avatar": "assets/avatars/twitch-loltyler1.jpg",
+      "updated": "2026-11-27"
     },
     {
       "followers": 3500000,
@@ -6356,14 +6384,14 @@
     },
     {
       "bio": "Your next discovery is waiting on TikTok.",
-      "followers": 97145545,
+      "followers": 97179612,
       "handle": "@tiktok",
       "hashtags": [
         "#SongsofTheSummer2026",
         "#TheVoice",
         "#spidermanmovie"
       ],
-      "likes": 470174431,
+      "likes": 470327278,
       "link": "https://www.tiktok.com/@tiktok",
       "location": "China",
       "name": "TikTok",
@@ -6373,7 +6401,7 @@
       "status": "verified_pass",
       "views": 567050,
       "avatar": "assets/avatars/tiktok-tiktok.jpg",
-      "updated": "2026-11-26"
+      "updated": "2026-11-27"
     },
     {
       "bio": "SEPAKAT",
@@ -6684,25 +6712,25 @@
       ],
       "reels": [
         {
-          "title": "Ramayana: Ravana Tandav (Full Video) | Ranbir Kapoor, Yash | AR Rahman,Vishal Dadlani,Kumar Vishwas",
-          "url": "https://www.youtube.com/watch?v=DAcoOJbK7DE",
-          "views": 12000,
+          "title": "Ramayana: Ram Ki Sita (Full Video) | Ranbir Kapoor, Sai P | Vivek Mishra,Palak Muchhal,Kumar Vishwas",
+          "url": "https://www.youtube.com/watch?v=Ju092MU7aW8",
+          "views": 8200,
           "thumb": null
         },
         {
-          "title": "JAILER (Official Video): FAZILPURIA | RAEES | LATEST HARYANVI SONG | T-SERIES",
-          "url": "https://www.youtube.com/watch?v=5sr5xYViBtY",
-          "views": 30000,
+          "title": "Dobara Nahi (Song): Faheem Abdullah | Duha Shah | Bhushan Kumar",
+          "url": "https://www.youtube.com/watch?v=H_fLgFH5i7U",
+          "views": 41000,
           "thumb": null
         },
         {
-          "title": "Malang: Humraah 8K Video Song| Aditya Roy Kapur,Disha P,Anil K,Kunal K| Sachet T| Mohit S| Fusion P",
-          "url": "https://www.youtube.com/watch?v=VN94oQp_8MQ",
-          "views": 406000,
+          "title": "Ramayana: Ram Ki Sita (Full Audio) | Ranbir Kapoor, Sai P | Vivek Mishra,Palak Muchhal,Kumar Vishwas",
+          "url": "https://www.youtube.com/watch?v=hbKBgeQtb2g",
+          "views": 207000,
           "thumb": null
         }
       ],
-      "updated": "2026-11-26"
+      "updated": "2026-11-27"
     },
     {
       "avatar": "assets/avatars/youtube-cocomelon.jpg",
@@ -6719,23 +6747,23 @@
         {
           "title": "Are We There Yet? | Family Road Trip | CoComelon Nursery Rhymes & Kids Songs",
           "url": "https://www.youtube.com/watch?v=auAcsvBCIN0",
-          "views": 7300,
+          "views": 765000,
           "thumb": null
         },
         {
           "title": "Happy & You Know It | JJ & Boba’s Snow Day Fun! ⛄| CoComelon Nursery Rhymes & Kids Songs",
           "url": "https://www.youtube.com/watch?v=K14Xy6Ntd7w",
-          "views": 983000,
+          "views": 1200000,
           "thumb": null
         },
         {
           "title": "Wheels on the Bus Challenge: JJ vs. Cody! | CoComelon Nursery Rhymes & Kids Songs",
           "url": "https://www.youtube.com/watch?v=Gm_HjftxXKY",
-          "views": 3500000,
+          "views": 4000000,
           "thumb": null
         }
       ],
-      "updated": "2026-11-26"
+      "updated": "2026-11-27"
     },
     {
       "avatar": "assets/avatars/youtube-setindia.jpg",
@@ -6751,25 +6779,25 @@
       "views": 1575000,
       "reels": [
         {
-          "title": "Arjun Is Scared | The Kapil Sharma Show |Celebrity Birthday Special |Sign up for Sony LIV on YouTube",
-          "url": "https://www.youtube.com/watch?v=WiXMonvqnn8",
-          "views": 108,
+          "title": "Divya Ji's Secret |The Kapil Sharma Show|Celebrity Birthday Special |Sign up for Sony LIV on YouTube",
+          "url": "https://www.youtube.com/watch?v=2dlzSbMS9mo",
+          "views": 6,
           "thumb": null
         },
         {
-          "title": "Police Get a Major Lead | Crime Patrol Satark S2 | Inspector Series |Sign up for Sony LIV on YouTube",
-          "url": "https://www.youtube.com/watch?v=q_4Ac6CkxMM",
-          "views": 5200,
+          "title": "Bappi Ji's Story |The Kapil Sharma Show |Celebrity Birthday Special |Sign up for Sony LIV on YouTube",
+          "url": "https://www.youtube.com/watch?v=T-dohADPT_E",
+          "views": 96,
           "thumb": null
         },
         {
-          "title": "Team CID Solve Mystery Of 5 Crores | CID | Full Episode | Sign up for Sony LIV on YouTube",
-          "url": "https://www.youtube.com/watch?v=npwpZfvQv44",
-          "views": 413,
+          "title": "Dark Secret of Mumbai | Crime Patrol Satark S2 | Inspector Series | Sign up for Sony LIV on YouTube",
+          "url": "https://www.youtube.com/watch?v=S_bseCX0VE0",
+          "views": 5700,
           "thumb": null
         }
       ],
-      "updated": "2026-11-26"
+      "updated": "2026-11-27"
     },
     {
       "bio": "Welcome to the world of Vlad & Niki! Join brothers Vlad and Niki for imaginative play, funny stories and adventures filled with creativity and discovery. Created for preschool audiences, each episode combines live action, animation and music to bring their adventures to life. Since launching in 2018, Vlad & Niki has grown into a global network of 27 YouTube channels in 18 languages, with more than 539 million subscribers and 315 billion views across its channels. Vlad & Niki was created by Sergey and Victoria Vashketov, the parents of Vlad and Niki. © Content Media Group FZC LLC. All rights reserved.",
@@ -6782,21 +6810,21 @@
       "platform": "YouTube",
       "reels": [
         {
+          "title": "Kids play with imoo Minions Smartwatches and save the day!",
+          "url": "https://www.youtube.com/watch?v=2UXz_cw9HAw",
+          "views": 58000,
+          "thumb": null
+        },
+        {
           "title": "Magic Giant Vacuum Adventure for kids",
           "url": "https://www.youtube.com/watch?v=oO2mcphaBS4",
-          "views": 735000,
+          "views": 1500000,
           "thumb": null
         },
         {
           "title": "Car Garage Adventure with Vlad and Niki",
           "url": "https://www.youtube.com/watch?v=Is_Ih3JaBgc",
-          "views": 1600000,
-          "thumb": null
-        },
-        {
-          "title": "Learn Good Habits with a Sweet Machine | Useful Stories for Kids",
-          "url": "https://www.youtube.com/watch?v=c7QIMtGRjGE",
-          "views": 2800000,
+          "views": 1700000,
           "thumb": null
         }
       ],
@@ -6804,7 +6832,7 @@
       "status": "verified_pass",
       "views": 1950667,
       "avatar": "assets/avatars/youtube-vladandniki.jpg",
-      "updated": "2026-11-26"
+      "updated": "2026-11-27"
     },
     {
       "bio": "Alan and Alex Stokes",
@@ -6823,13 +6851,13 @@
         {
           "title": "10 Levels Of Futuristic Tech That Shouldn't Exist!",
           "url": "https://www.youtube.com/watch?v=Hkjp36hjzqo",
-          "views": 19000000,
+          "views": 20000000,
           "thumb": null
         },
         {
           "title": "I Learned Extreme Camouflage to Sneak Into a Real Movie!",
           "url": "https://www.youtube.com/watch?v=-YWR0zFho6M",
-          "views": 7300000,
+          "views": 7400000,
           "thumb": null
         },
         {
@@ -6843,7 +6871,7 @@
       "status": "verified_pass",
       "views": 20683333,
       "avatar": "assets/avatars/youtube-stokestwins.jpg",
-      "updated": "2026-11-26"
+      "updated": "2026-11-27"
     },
     {
       "bio": "\"Kids Diana Show\" is the top rated kids' YouTube channel starring Diana and Roma as they constantly engage in fun and crazy adventures. Since launching on YouTube in 2015, Kids Diana Show has attracted over 200+ million worldwide subscribers and 100+ billion views, while on average 10 billion monthly views on 20 channels and translated into 20 languages. Each episode is created with a creative mix of live performances, animation and music to create comedy videos for preschoolers.",
@@ -6857,21 +6885,21 @@
       "platform": "YouTube",
       "reels": [
         {
+          "title": "Kids Find a Secret Treehouse!",
+          "url": "https://www.youtube.com/watch?v=Fp4Y5ahegg8",
+          "views": 165000,
+          "thumb": null
+        },
+        {
           "title": "Kids Pretend to Be Adults! Fun Stories for Kids",
           "url": "https://www.youtube.com/watch?v=OJQdsSy1v2Y",
-          "views": 244000,
+          "views": 437000,
           "thumb": null
         },
         {
           "title": "Color vs. Black and White! Kids Learn to Respect Differences",
           "url": "https://www.youtube.com/watch?v=yJ8DGLldq5s",
-          "views": 644000,
-          "thumb": null
-        },
-        {
-          "title": "Adam and Oliver’s Adventure Collection",
-          "url": "https://www.youtube.com/watch?v=n0s1fVImC_w",
-          "views": 260000,
+          "views": 697000,
           "thumb": null
         }
       ],
@@ -6879,7 +6907,7 @@
       "status": "verified_pass",
       "views": 304333,
       "avatar": "assets/avatars/youtube-kidsdianashow.jpg",
-      "updated": "2026-11-26"
+      "updated": "2026-11-27"
     },
     {
       "followers": 133000000,
@@ -6951,7 +6979,7 @@
       "sponsored": false,
       "status": "verified_pass",
       "views": 11070000,
-      "updated": "2026-11-26"
+      "updated": "2026-11-27"
     },
     {
       "avatar": "assets/avatars/instagram-kyliejenner.jpg",
